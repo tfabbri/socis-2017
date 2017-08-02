@@ -1,3 +1,4 @@
+--##	EXPORT	a670ebf9512d3e41c12189e5a488902b73651efb	ControllerFmu.fmu	2017-02-08 21:48:19	tool-wrapper	{"name":"fmu-import-export","version":"0.2.6"}
 --##	EXPORT	8027c09dbd3264472fe3ef42566a62c482574a19	ControllerFmu.fmu	2017-02-08 21:24:09	tool-wrapper	{"name":"fmu-import-export","version":"0.2.6"}
 --##	EXPORT	d93125a1398a5df0db9e5b12adce7c3a0d90aaf6	ControllerFmu.fmu	2017-02-08 21:22:48	c-code	{"name":"fmu-import-export","version":"0.2.6"}
 --##	EXPORT	cf028a646ea698e3f9d4557fcbabd1db5aebfbf3	ControllerFmu.fmu	2017-02-08 21:22:03	tool-wrapper	{"name":"fmu-import-export","version":"0.2.6"}
