@@ -1,0 +1,19 @@
+class World
+
+operations
+	public run: () ==> ()
+	run () == (
+		-- start the controller thread
+		start (PlantSys`ctrl);
+		
+		-- wait forever
+		block()
+	);
+	
+	block: () ==> ()
+	block () == skip
+	
+sync
+	per block => false
+
+end World
