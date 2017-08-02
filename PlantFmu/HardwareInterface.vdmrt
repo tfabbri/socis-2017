@@ -1,0 +1,37 @@
+--##	EXPORT	6d6e9a2379bbb7315f005cc116e81eaf2f9d7cf9	PlantFmu.fmu	2017-02-08 21:20:58	tool-wrapper	{"name":"fmu-import-export","version":"0.2.6"}
+class HardwareInterface
+
+instance variables
+	--------------------------
+	-- controlled variables --
+	--------------------------
+	
+	-- @ interface: type = output, name="cbp";
+	public cbp : BoolPort := new BoolPort(false);
+	
+	-- @ interface: type = output, name="cip";
+	public cip : IntPort := new IntPort(0);
+	
+	-- @ interface: type = output, name="crp";
+	public crp : RealPort := new RealPort(0.0);
+	
+	-- @ interface: type = output, name="csp";
+	public csp : StringPort := new StringPort("");
+	
+	-------------------------
+	-- monitored variables --
+	-------------------------
+	
+	-- @ interface: type = input, name="mbp";
+	public mbp : BoolPort := new BoolPort(false);
+	
+	-- @ interface: type = input, name="mip";
+	public mip : IntPort := new IntPort(0);
+	
+	-- @ interface: type = input, name="mrp";
+	public mrp : RealPort := new RealPort(0.0);
+	
+	-- @ interface: type = input, name="msp";	
+	public msp : StringPort := new StringPort("");
+	
+end HardwareInterface
