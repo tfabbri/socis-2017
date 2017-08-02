@@ -1,0 +1,41 @@
+--##	EXPORT	8027c09dbd3264472fe3ef42566a62c482574a19	ControllerFmu.fmu	2017-02-08 21:24:09	tool-wrapper	{"name":"fmu-import-export","version":"0.2.6"}
+--##	EXPORT	d93125a1398a5df0db9e5b12adce7c3a0d90aaf6	ControllerFmu.fmu	2017-02-08 21:22:48	c-code	{"name":"fmu-import-export","version":"0.2.6"}
+--##	EXPORT	cf028a646ea698e3f9d4557fcbabd1db5aebfbf3	ControllerFmu.fmu	2017-02-08 21:22:03	tool-wrapper	{"name":"fmu-import-export","version":"0.2.6"}
+--##	EXPORT	b5573ca7b9c4c7365fcc6a78440a270cea379499	ControllerFmu.fmu	2017-02-08 21:20:08	tool-wrapper	{"name":"fmu-import-export","version":"0.2.6"}
+--##	EXPORT	b25a1b4d150edba25170d2475b29ea20b5a83aec	ControllerFmu.fmu	2017-02-08 21:17:50	tool-wrapper	{"name":"fmu-import-export","version":"0.2.6"}
+class HardwareInterface
+
+instance variables
+	--------------------------
+	-- controlled variables --
+	--------------------------
+	
+	-- @ interface: type = output, name="cbp";
+	public cbp : BoolPort := new BoolPort(false);
+	
+	-- @ interface: type = output, name="cip";
+	public cip : IntPort := new IntPort(0);
+	
+	-- @ interface: type = output, name="crp";
+	public crp : RealPort := new RealPort(0.0);
+	
+	-- @ interface: type = output, name="csp";
+	public csp : StringPort := new StringPort("");
+	
+	-------------------------
+	-- monitored variables --
+	-------------------------
+	
+	-- @ interface: type = input, name="mbp";
+	public mbp : BoolPort := new BoolPort(false);
+	
+	-- @ interface: type = input, name="mip";
+	public mip : IntPort := new IntPort(0);
+	
+	-- @ interface: type = input, name="mrp";
+	public mrp : RealPort := new RealPort(0.0);
+	
+	-- @ interface: type = input, name="msp";	
+	public msp : StringPort := new StringPort("");
+	
+end HardwareInterface
