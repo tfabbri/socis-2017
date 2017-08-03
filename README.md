@@ -16,11 +16,15 @@ Add the required components to Modelio and Overture:
 
 Modelio  
 -------
+In the system requirements, Modelio suggests 3 GB of memory. TASTE VM starts with 1 GB of memory. Increase the memory size from the VirtualBox menu.  
+
+- Download Modelio at the following [link](https://www.modelio.org/download/send/16-modelio-3-4-1/29-modelio-3-4-1-linux-32-bit.html)
 - `wget http://forge.modelio.org/attachments/download/16192/SysMLArchitect_3.4.04.jmdac`
 - `wget http://forge.modelio.org/attachments/download/19524/INTOCPS_1.2.06.jmdac`
 
 Overture 
 --------
+
 
 ### STAGE 2:
 
