@@ -28,7 +28,7 @@
  *
  --------------------------------- */ 
  
-extern TVP numFields_5;
+extern TVP numFields_4;
 
 
 /* -------------------------------
@@ -39,7 +39,7 @@ extern TVP numFields_5;
  
 
 /*  class id  */
-#define CLASS_ID_Port_ID 4
+#define CLASS_ID_Port_ID 3
 
 #define PortCLASS struct Port*
 

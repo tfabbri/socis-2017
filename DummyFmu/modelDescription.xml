@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <fmiModelDescription 	fmiVersion="2.0" 
-						modelName="DummyFmu" 
-						guid="{08a1992f-5207-4c1b-81a1-8d4b9021bd53}" 
+						modelName="ControllerFmu" 
+						guid="{d05c3dcf-f5dc-4215-9295-61bc67763a54}" 
 						description="" 
 						author="" 
 						version="Version 1" 
 						copyright="Copyright Overture tool (Aarhus University)" 
 						license="Some Overture FMI License" 
-						generationTool="Overture Tool FMI Exporter - v0.2.6"
-						generationDateAndTime="2017-08-07T10:51:58" 
+						generationTool="Overture Tool FMI Exporter - v0.2.7-SNAPSHOT"
+						generationDateAndTime="2017-08-09T23:44:01" 
 						variableNamingConvention="flat" 
 						numberOfEventIndicators="0">
 
-	<CoSimulation 	modelIdentifier="DummyFmu" 
+	<CoSimulation 	modelIdentifier="ControllerFmu" 
 					needsExecutionTool="false" 
 					canHandleVariableCommunicationStepSize="true" 
 					canInterpolateInputs="false" 
@@ -42,7 +42,6 @@
 				<File name="vdmlib/VdmSeq.c" />
 				<File name="Controller.c" />
 				<File name="CtrlSys.c" />
-				<File name="HardwareInterface.c" />
 				<File name="World.c" />
 				<File name="Port.c" />
 				<File name="IntPort.c" />
@@ -50,6 +49,7 @@
 				<File name="RealPort.c" />
 				<File name="StringPort.c" />
 				<File name="IO.c" />
+				<File name="HardwareInterface.c" />
 				<File name="Fmu.c" />
 				<File name="FmuIO.c" />
 				<File name="FmuModel.c" />
@@ -77,11 +77,9 @@
 				<link valueReference="0" name="CtrlSys.hwi.cbp.value" />
 				<link valueReference="1" name="CtrlSys.hwi.cip.value" />
 				<link valueReference="2" name="CtrlSys.hwi.crp.value" />
-				<link valueReference="3" name="CtrlSys.hwi.csp.value" />
-				<link valueReference="4" name="CtrlSys.hwi.mbp.value" />
-				<link valueReference="5" name="CtrlSys.hwi.mip.value" />
-				<link valueReference="6" name="CtrlSys.hwi.mrp.value" />
-				<link valueReference="7" name="CtrlSys.hwi.msp.value" />
+				<link valueReference="3" name="CtrlSys.hwi.mbp.value" />
+				<link valueReference="4" name="CtrlSys.hwi.mip.value" />
+				<link valueReference="5" name="CtrlSys.hwi.mrp.value" />
 
 			</Overture>
 		</Tool>
@@ -97,22 +95,18 @@
 		<!-- Index 3 -->
 		<ScalarVariable name="crp" valueReference="2" causality="output" variability="discrete" initial="approx"><Real start="0.0" /></ScalarVariable>
 		<!-- Index 4 -->
-		<ScalarVariable name="csp" valueReference="3" causality="output" variability="discrete" initial="approx"><String start="" /></ScalarVariable>
+		<ScalarVariable name="mbp" valueReference="3" causality="input" variability="discrete"><Boolean start="false" /></ScalarVariable>
 		<!-- Index 5 -->
-		<ScalarVariable name="mbp" valueReference="4" causality="input" variability="discrete"><Boolean start="false" /></ScalarVariable>
+		<ScalarVariable name="mip" valueReference="4" causality="input" variability="discrete"><Integer start="0" /></ScalarVariable>
 		<!-- Index 6 -->
-		<ScalarVariable name="mip" valueReference="5" causality="input" variability="discrete"><Integer start="0" /></ScalarVariable>
-		<!-- Index 7 -->
-		<ScalarVariable name="mrp" valueReference="6" causality="input" variability="discrete"><Real start="0.0" /></ScalarVariable>
-		<!-- Index 8 -->
-		<ScalarVariable name="msp" valueReference="7" causality="input" variability="discrete"><String start="" /></ScalarVariable>
+		<ScalarVariable name="mrp" valueReference="5" causality="input" variability="discrete"><Real start="0.0" /></ScalarVariable>
 
 	
 	</ModelVariables>
 
 	<ModelStructure>
 	<Outputs>
-			<Unknown index="1"  dependencies=""/>			<Unknown index="2"  dependencies=""/>			<Unknown index="3"  dependencies=""/>			<Unknown index="4"  dependencies=""/>
+			<Unknown index="1"  dependencies=""/>			<Unknown index="2"  dependencies=""/>			<Unknown index="3"  dependencies=""/>
 	</Outputs>
 
 

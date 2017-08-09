@@ -40,7 +40,7 @@
  
 
 /*  class id  */
-#define CLASS_ID_IntPort_ID 5
+#define CLASS_ID_IntPort_ID 4
 
 #define IntPortCLASS struct IntPort*
 

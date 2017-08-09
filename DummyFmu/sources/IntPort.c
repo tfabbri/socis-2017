@@ -38,22 +38,22 @@ static void IntPort_free(struct IntPort *this)
  --------------------------------- */
  
 
- static  TVP _Z18fieldInitializer22EV(IntPortCLASS this)	{
+ static  TVP _Z18fieldInitializer12EV(IntPortCLASS this)	{
 /* Fmi.vdmrt 39:14 */
-TVP ret_21 = newInt(0)
+TVP ret_11 = newInt(0)
 ;
 
-return ret_21;
+return ret_11;
 }
 
 
 
- static  TVP _Z18fieldInitializer21EV(IntPortCLASS this)	{
+ static  TVP _Z18fieldInitializer11EV(IntPortCLASS this)	{
 
-TVP ret_22 = newInt(1)
+TVP ret_12 = newInt(1)
 ;
 
-return ret_22;
+return ret_12;
 }
 
 
@@ -72,10 +72,10 @@ vdmFree(field_tmp_2);
 /* Fmi.vdmrt 48:14 */
  static  TVP _Z8getValueEV(IntPortCLASS this)	{
 /* Fmi.vdmrt 49:23 */
-TVP ret_23 = GET_FIELD_PTR_GC(IntPort, IntPort, this, value)
+TVP ret_13 = GET_FIELD_PTR_GC(IntPort, IntPort, this, value)
 ;
 /* Fmi.vdmrt 49:16 */
-return ret_23;
+return ret_13;
 }
 
 
@@ -179,8 +179,8 @@ IntPortCLASS IntPort_Constructor(IntPortCLASS this_ptr)
 		this_ptr->_IntPort_refs = 0;
 		this_ptr->_IntPort_pVTable=VTableArrayForIntPort;
 
-				this_ptr->m_IntPort_numFields= _Z18fieldInitializer21EV(this_ptr);
-						this_ptr->m_IntPort_value= _Z18fieldInitializer22EV(this_ptr);
+				this_ptr->m_IntPort_numFields= _Z18fieldInitializer11EV(this_ptr);
+						this_ptr->m_IntPort_value= _Z18fieldInitializer12EV(this_ptr);
 			}
 
 	return this_ptr;

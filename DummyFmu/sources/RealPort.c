@@ -38,22 +38,22 @@ static void RealPort_free(struct RealPort *this)
  --------------------------------- */
  
 
- static  TVP _Z18fieldInitializer26EV(RealPortCLASS this)	{
+ static  TVP _Z18fieldInitializer16EV(RealPortCLASS this)	{
 /* Fmi.vdmrt 73:15 */
-TVP ret_27 = newReal(0.0)
+TVP ret_17 = newReal(0.0)
 ;
 
-return ret_27;
+return ret_17;
 }
 
 
 
- static  TVP _Z18fieldInitializer25EV(RealPortCLASS this)	{
+ static  TVP _Z18fieldInitializer15EV(RealPortCLASS this)	{
 
-TVP ret_28 = newInt(1)
+TVP ret_18 = newInt(1)
 ;
 
-return ret_28;
+return ret_18;
 }
 
 
@@ -72,10 +72,10 @@ vdmFree(field_tmp_4);
 /* Fmi.vdmrt 82:14 */
  static  TVP _Z8getValueEV(RealPortCLASS this)	{
 /* Fmi.vdmrt 83:23 */
-TVP ret_29 = GET_FIELD_PTR_GC(RealPort, RealPort, this, value)
+TVP ret_19 = GET_FIELD_PTR_GC(RealPort, RealPort, this, value)
 ;
 /* Fmi.vdmrt 83:16 */
-return ret_29;
+return ret_19;
 }
 
 
@@ -179,8 +179,8 @@ RealPortCLASS RealPort_Constructor(RealPortCLASS this_ptr)
 		this_ptr->_RealPort_refs = 0;
 		this_ptr->_RealPort_pVTable=VTableArrayForRealPort;
 
-				this_ptr->m_RealPort_numFields= _Z18fieldInitializer25EV(this_ptr);
-						this_ptr->m_RealPort_value= _Z18fieldInitializer26EV(this_ptr);
+				this_ptr->m_RealPort_numFields= _Z18fieldInitializer15EV(this_ptr);
+						this_ptr->m_RealPort_value= _Z18fieldInitializer16EV(this_ptr);
 			}
 
 	return this_ptr;

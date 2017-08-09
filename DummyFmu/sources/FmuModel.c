@@ -17,7 +17,6 @@
 
 #include "Controller.h"
 #include "CtrlSys.h"
-#include "HardwareInterface.h"
 #include "World.h"
 #include "Port.h"
 #include "IntPort.h"
@@ -25,6 +24,7 @@
 #include "RealPort.h"
 #include "StringPort.h"
 #include "IO.h"
+#include "HardwareInterface.h"
 
 TVP sys = NULL;
 fmi2Boolean syncOutAllowed = fmi2True;
@@ -33,37 +33,31 @@ fmi2Real maxStepSize = 0.0;
 
 void syncInputsToModel(){
 	{
-		TVP newValue = newInt(fmiBuffer.intBuffer[5]);
-		TVP p = GET_FIELD(HardwareInterface,HardwareInterface,g_CtrlSys_hwi,mip);
-		SET_FIELD(IntPort,IntPort,p,value,newValue);
-		vdmFree(newValue);vdmFree(p);
-	}
-	{
-		TVP newValue = newReal(fmiBuffer.realBuffer[6]);
+		TVP newValue = newReal(fmiBuffer.realBuffer[5]);
 		TVP p = GET_FIELD(HardwareInterface,HardwareInterface,g_CtrlSys_hwi,mrp);
 		SET_FIELD(RealPort,RealPort,p,value,newValue);
 		vdmFree(newValue);vdmFree(p);
 	}
 	{
-		TVP newValue = newBool(fmiBuffer.booleanBuffer[4]);
+		TVP newValue = newBool(fmiBuffer.booleanBuffer[3]);
 		TVP p = GET_FIELD(HardwareInterface,HardwareInterface,g_CtrlSys_hwi,mbp);
 		SET_FIELD(BoolPort,BoolPort,p,value,newValue);
 		vdmFree(newValue);vdmFree(p);
 	}
 	{
-		//TVP newValue = (fmiBuffer.[7]);
-		//TVP p = GET_FIELD(HardwareInterface,HardwareInterface,g_CtrlSys_hwi,msp);
-		//SET_FIELD(StringPort,StringPort,p,value,newValue);
-		//vdmFree(newValue);vdmFree(p);
+		TVP newValue = newInt(fmiBuffer.intBuffer[4]);
+		TVP p = GET_FIELD(HardwareInterface,HardwareInterface,g_CtrlSys_hwi,mip);
+		SET_FIELD(IntPort,IntPort,p,value,newValue);
+		vdmFree(newValue);vdmFree(p);
 	}
 }
 void syncOutputsToBuffers(){
 	if(syncOutAllowed == fmi2False) return;
 
 	{
-		TVP p = GET_FIELD(HardwareInterface,HardwareInterface,g_CtrlSys_hwi,cbp);
-		TVP v = GET_FIELD(BoolPort,BoolPort,p,value);
-		fmiBuffer.booleanBuffer[0]=v->value.boolVal;
+		TVP p = GET_FIELD(HardwareInterface,HardwareInterface,g_CtrlSys_hwi,crp);
+		TVP v = GET_FIELD(RealPort,RealPort,p,value);
+		fmiBuffer.realBuffer[2]=v->value.doubleVal;
 		vdmFree(v);vdmFree(p);
 	}
 	{
@@ -73,15 +67,9 @@ void syncOutputsToBuffers(){
 		vdmFree(v);vdmFree(p);
 	}
 	{
-		TVP p = GET_FIELD(HardwareInterface,HardwareInterface,g_CtrlSys_hwi,csp);
-		TVP v = GET_FIELD(StringPort,StringPort,p,value);
-		//fmiBuffer.[3]=v->value.;
-		vdmFree(v);vdmFree(p);
-	}
-	{
-		TVP p = GET_FIELD(HardwareInterface,HardwareInterface,g_CtrlSys_hwi,crp);
-		TVP v = GET_FIELD(RealPort,RealPort,p,value);
-		fmiBuffer.realBuffer[2]=v->value.doubleVal;
+		TVP p = GET_FIELD(HardwareInterface,HardwareInterface,g_CtrlSys_hwi,cbp);
+		TVP v = GET_FIELD(BoolPort,BoolPort,p,value);
+		fmiBuffer.booleanBuffer[0]=v->value.boolVal;
 		vdmFree(v);vdmFree(p);
 	}
 }
@@ -107,7 +95,6 @@ void systemInit()
 
 	Controller_const_init();
 	CtrlSys_const_init();
-	HardwareInterface_const_init();
 	World_const_init();
 	Port_const_init();
 	IntPort_const_init();
@@ -115,10 +102,10 @@ void systemInit()
 	RealPort_const_init();
 	StringPort_const_init();
 	IO_const_init();
+	HardwareInterface_const_init();
 
 	Controller_static_init();
 	CtrlSys_static_init();
-	HardwareInterface_static_init();
 	World_static_init();
 	Port_static_init();
 	IntPort_static_init();
@@ -126,6 +113,7 @@ void systemInit()
 	RealPort_static_init();
 	StringPort_static_init();
 	IO_static_init();
+	HardwareInterface_static_init();
 
 	sys = _Z7CtrlSysEV(NULL);
 
@@ -136,7 +124,6 @@ void systemDeInit()
 {
 	Controller_static_shutdown();
 	CtrlSys_static_shutdown();
-	HardwareInterface_static_shutdown();
 	World_static_shutdown();
 	Port_static_shutdown();
 	IntPort_static_shutdown();
@@ -144,10 +131,10 @@ void systemDeInit()
 	RealPort_static_shutdown();
 	StringPort_static_shutdown();
 	IO_static_shutdown();
+	HardwareInterface_static_shutdown();
 
 	Controller_const_shutdown();
 	CtrlSys_const_shutdown();
-	HardwareInterface_const_shutdown();
 	World_const_shutdown();
 	Port_const_shutdown();
 	IntPort_const_shutdown();
@@ -155,6 +142,7 @@ void systemDeInit()
 	RealPort_const_shutdown();
 	StringPort_const_shutdown();
 	IO_const_shutdown();
+	HardwareInterface_const_shutdown();
 
 	vdmFree(sys);
 

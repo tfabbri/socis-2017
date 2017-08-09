@@ -89,15 +89,6 @@ TVP TmpVar9 = _Z2IOEV(NULL)
 
 TVP TmpVar10 = _Z2IOEV(NULL)
 ;
-
-TVP TmpVar11 = _Z2IOEV(NULL)
-;
-
-TVP TmpVar12 = _Z2IOEV(NULL)
-;
-
-TVP TmpVar13 = _Z2IOEV(NULL)
-;
 /* Controller.vdmrt 13:12 */
 TVP embeding_1 = newSeqVarGC(17, NULL, newCharGC('\n', NULL), newCharGC('H', NULL), newCharGC('e', NULL), newCharGC('l', NULL), newCharGC('l', NULL), newCharGC('o', NULL), newCharGC(',', NULL), newCharGC(' ', NULL), newCharGC('D', NULL), newCharGC('E', NULL), newCharGC(' ', NULL), newCharGC('w', NULL), newCharGC('o', NULL), newCharGC('r', NULL), newCharGC('l', NULL), newCharGC('d', NULL), newCharGC('\n', NULL))
 ;
@@ -163,33 +154,6 @@ TVP embeding_13 = CALL_FUNC(RealPort, RealPort, GET_FIELD_GC(HardwareInterface, 
 ;
 /* Controller.vdmrt 28:3 */
 CALL_FUNC(RealPort, RealPort, GET_FIELD_GC(HardwareInterface, HardwareInterface, GET_FIELD_PTR_GC(Controller, Controller, this, hwi), crp), CLASS_RealPort__Z8setValueER, embeding_13);
-/* Controller.vdmrt 31:12 */
-TVP embeding_14 = newSeqVarGC(7, NULL, newCharGC('m', NULL), newCharGC('s', NULL), newCharGC('p', NULL), newCharGC(' ', NULL), newCharGC('=', NULL), newCharGC(' ', NULL), newCharGC('\"', NULL))
-;
-/* Controller.vdmrt 31:3 */
-CALL_FUNC(IO, IO, TmpVar11, CLASS_IO__Z5printEU, embeding_14);
-/* Controller.vdmrt 31:34 */
-TVP embeding_15 = CALL_FUNC(StringPort, StringPort, GET_FIELD_GC(HardwareInterface, HardwareInterface, GET_FIELD_PTR_GC(Controller, Controller, this, hwi), msp), CLASS_StringPort__Z8getValueEV)
-;
-/* Controller.vdmrt 31:25 */
-CALL_FUNC(IO, IO, TmpVar12, CLASS_IO__Z5printEU, embeding_15);
-/* Controller.vdmrt 31:64 */
-TVP embeding_16 = newSeqVarGC(2, NULL, newCharGC('\"', NULL), newCharGC('\n', NULL))
-;
-/* Controller.vdmrt 31:55 */
-CALL_FUNC(IO, IO, TmpVar13, CLASS_IO__Z5printEU, embeding_16);
-/* Controller.vdmrt 34:25 */
-TVP embeding_17 = CALL_FUNC(StringPort, StringPort, GET_FIELD_GC(HardwareInterface, HardwareInterface, GET_FIELD_PTR_GC(Controller, Controller, this, hwi), msp), CLASS_StringPort__Z8getValueEV)
-;
-/* Controller.vdmrt 35:25 */
-TVP embeding_18 = newSeqVarGC(0, NULL, NULL)
-;
-/* Controller.vdmrt 33:3 */
-if ( toBool(vdmLessOrEqualGC(vdmSeqLenGC(CALL_FUNC(StringPort, StringPort, GET_FIELD_GC(HardwareInterface, HardwareInterface, GET_FIELD_PTR_GC(Controller, Controller, this, hwi), msp), CLASS_StringPort__Z8getValueEV), NULL), newIntGC(20, NULL), NULL)) )
-	/* Controller.vdmrt 34:8 */
-	CALL_FUNC(StringPort, StringPort, GET_FIELD_GC(HardwareInterface, HardwareInterface, GET_FIELD_PTR_GC(Controller, Controller, this, hwi), csp), CLASS_StringPort__Z8setValueE1QC, embeding_17);else
-	/* Controller.vdmrt 35:8 */
-	CALL_FUNC(StringPort, StringPort, GET_FIELD_GC(HardwareInterface, HardwareInterface, GET_FIELD_PTR_GC(Controller, Controller, this, hwi), csp), CLASS_StringPort__Z8setValueE1QC, embeding_18);;
 }
 
 

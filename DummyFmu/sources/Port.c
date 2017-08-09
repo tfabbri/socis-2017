@@ -37,22 +37,22 @@ static void Port_free(struct Port *this)
  --------------------------------- */
  
 
- static  TVP _Z18fieldInitializer20EV()	{
+ static  TVP _Z18fieldInitializer10EV()	{
 
-TVP ret_19 = newInt(0)
+TVP ret_9 = newInt(0)
 ;
 
-return ret_19;
+return ret_9;
 }
 
 
 
- static  TVP _Z18fieldInitializer19EV(PortCLASS this)	{
+ static  TVP _Z17fieldInitializer9EV(PortCLASS this)	{
 
-TVP ret_20 = newInt(0)
+TVP ret_10 = newInt(0)
 ;
 
-return ret_20;
+return ret_10;
 }
 
 
@@ -73,7 +73,7 @@ return NULL;
 
  void Port_const_init()	{
 
-numFields_5 = _Z18fieldInitializer20EV();
+numFields_4 = _Z18fieldInitializer10EV();
 
 return ;
 }
@@ -82,7 +82,7 @@ return ;
 
  void Port_const_shutdown()	{
 
-vdmFree(numFields_5);
+vdmFree(numFields_4);
 
 return ;
 }
@@ -146,7 +146,7 @@ PortCLASS Port_Constructor(PortCLASS this_ptr)
 		this_ptr->_Port_refs = 0;
 		this_ptr->_Port_pVTable=VTableArrayForPort;
 
-				this_ptr->m_Port_numFields= _Z18fieldInitializer19EV(this_ptr);
+				this_ptr->m_Port_numFields= _Z17fieldInitializer9EV(this_ptr);
 						}
 
 	return this_ptr;
@@ -199,5 +199,5 @@ return __buf;
  --------------------------------- */
  
 /*  initialize globals - this is done last since they are declared in the header but uses init functions which are printet in any order  */
-		TVP numFields_5 =  NULL ;
+		TVP numFields_4 =  NULL ;
 	

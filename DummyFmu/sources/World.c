@@ -37,22 +37,22 @@ static void World_free(struct World *this)
  --------------------------------- */
  
 
- static  TVP _Z18fieldInitializer18EV()	{
+ static  TVP _Z17fieldInitializer8EV()	{
 
-TVP ret_17 = newInt(0)
+TVP ret_7 = newInt(0)
 ;
 
-return ret_17;
+return ret_7;
 }
 
 
 
- static  TVP _Z18fieldInitializer17EV(WorldCLASS this)	{
+ static  TVP _Z17fieldInitializer7EV(WorldCLASS this)	{
 
-TVP ret_18 = newInt(0)
+TVP ret_8 = newInt(0)
 ;
 
-return ret_18;
+return ret_8;
 }
 
 
@@ -78,7 +78,7 @@ CALL_FUNC_PTR(World, World, this, CLASS_World__Z5blockEV);
 
  void World_const_init()	{
 
-numFields_4 = _Z18fieldInitializer18EV();
+numFields_3 = _Z17fieldInitializer8EV();
 
 return ;
 }
@@ -87,7 +87,7 @@ return ;
 
  void World_const_shutdown()	{
 
-vdmFree(numFields_4);
+vdmFree(numFields_3);
 
 return ;
 }
@@ -151,7 +151,7 @@ WorldCLASS World_Constructor(WorldCLASS this_ptr)
 		this_ptr->_World_refs = 0;
 		this_ptr->_World_pVTable=VTableArrayForWorld;
 
-				this_ptr->m_World_numFields= _Z18fieldInitializer17EV(this_ptr);
+				this_ptr->m_World_numFields= _Z17fieldInitializer7EV(this_ptr);
 						}
 
 	return this_ptr;
@@ -204,5 +204,5 @@ return __buf;
  --------------------------------- */
  
 /*  initialize globals - this is done last since they are declared in the header but uses init functions which are printet in any order  */
-		TVP numFields_4 =  NULL ;
+		TVP numFields_3 =  NULL ;
 	

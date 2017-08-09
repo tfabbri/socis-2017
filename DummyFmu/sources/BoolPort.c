@@ -38,22 +38,22 @@ static void BoolPort_free(struct BoolPort *this)
  --------------------------------- */
  
 
- static  TVP _Z18fieldInitializer24EV(BoolPortCLASS this)	{
+ static  TVP _Z18fieldInitializer14EV(BoolPortCLASS this)	{
 /* Fmi.vdmrt 56:15 */
-TVP ret_24 = newBool(false)
+TVP ret_14 = newBool(false)
 ;
 
-return ret_24;
+return ret_14;
 }
 
 
 
- static  TVP _Z18fieldInitializer23EV(BoolPortCLASS this)	{
+ static  TVP _Z18fieldInitializer13EV(BoolPortCLASS this)	{
 
-TVP ret_25 = newInt(1)
+TVP ret_15 = newInt(1)
 ;
 
-return ret_25;
+return ret_15;
 }
 
 
@@ -72,10 +72,10 @@ vdmFree(field_tmp_3);
 /* Fmi.vdmrt 65:14 */
  static  TVP _Z8getValueEV(BoolPortCLASS this)	{
 /* Fmi.vdmrt 66:23 */
-TVP ret_26 = GET_FIELD_PTR_GC(BoolPort, BoolPort, this, value)
+TVP ret_16 = GET_FIELD_PTR_GC(BoolPort, BoolPort, this, value)
 ;
 /* Fmi.vdmrt 66:16 */
-return ret_26;
+return ret_16;
 }
 
 
@@ -179,8 +179,8 @@ BoolPortCLASS BoolPort_Constructor(BoolPortCLASS this_ptr)
 		this_ptr->_BoolPort_refs = 0;
 		this_ptr->_BoolPort_pVTable=VTableArrayForBoolPort;
 
-				this_ptr->m_BoolPort_numFields= _Z18fieldInitializer23EV(this_ptr);
-						this_ptr->m_BoolPort_value= _Z18fieldInitializer24EV(this_ptr);
+				this_ptr->m_BoolPort_numFields= _Z18fieldInitializer13EV(this_ptr);
+						this_ptr->m_BoolPort_value= _Z18fieldInitializer14EV(this_ptr);
 			}
 
 	return this_ptr;

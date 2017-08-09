@@ -3,7 +3,6 @@
 
 #include "Controller.h"
 #include "CtrlSys.h"
-#include "HardwareInterface.h"
 #include "World.h"
 #include "Port.h"
 #include "IntPort.h"
@@ -11,6 +10,7 @@
 #include "RealPort.h"
 #include "StringPort.h"
 #include "IO.h"
+#include "HardwareInterface.h"
 
 #define PERIODIC_GENERATED_COUNT 1
 

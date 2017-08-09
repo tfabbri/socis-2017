@@ -20,11 +20,9 @@ void HardwareInterface_free_fields(struct HardwareInterface *this)
 				vdmFree(this->m_HardwareInterface_cbp);
 			vdmFree(this->m_HardwareInterface_cip);
 			vdmFree(this->m_HardwareInterface_crp);
-			vdmFree(this->m_HardwareInterface_csp);
 			vdmFree(this->m_HardwareInterface_mbp);
 			vdmFree(this->m_HardwareInterface_mip);
 			vdmFree(this->m_HardwareInterface_mrp);
-			vdmFree(this->m_HardwareInterface_msp);
 	}
 
 static void HardwareInterface_free(struct HardwareInterface *this)
@@ -45,109 +43,89 @@ static void HardwareInterface_free(struct HardwareInterface *this)
  --------------------------------- */
  
 
- static  TVP _Z18fieldInitializer16EV(HardwareInterfaceCLASS this)	{
-/* HardwareInterface.vdmrt 42:29 */
-TVP ret_7 = _Z10StringPortE1QC(NULL, newSeqVar(0, NULL))
+ static  TVP _Z18fieldInitializer28EV(HardwareInterfaceCLASS this)	{
+/* HardwareInterface.vdmrt 43:27 */
+TVP ret_27 = _Z8RealPortER(NULL, newReal(0.0))
 ;
 
-return ret_7;
+return ret_27;
 }
 
 
 
- static  TVP _Z18fieldInitializer15EV(HardwareInterfaceCLASS this)	{
-/* HardwareInterface.vdmrt 39:27 */
-TVP ret_8 = _Z8RealPortER(NULL, newReal(0.0))
+ static  TVP _Z18fieldInitializer27EV(HardwareInterfaceCLASS this)	{
+/* HardwareInterface.vdmrt 40:26 */
+TVP ret_28 = _Z7IntPortEI(NULL, newInt(0))
 ;
 
-return ret_8;
+return ret_28;
 }
 
 
 
- static  TVP _Z18fieldInitializer14EV(HardwareInterfaceCLASS this)	{
-/* HardwareInterface.vdmrt 36:26 */
-TVP ret_9 = _Z7IntPortEI(NULL, newInt(0))
+ static  TVP _Z18fieldInitializer26EV(HardwareInterfaceCLASS this)	{
+/* HardwareInterface.vdmrt 37:27 */
+TVP ret_29 = _Z8BoolPortEB(NULL, newBool(false))
 ;
 
-return ret_9;
+return ret_29;
 }
 
 
 
- static  TVP _Z18fieldInitializer13EV(HardwareInterfaceCLASS this)	{
-/* HardwareInterface.vdmrt 33:27 */
-TVP ret_10 = _Z8BoolPortEB(NULL, newBool(false))
+ static  TVP _Z18fieldInitializer25EV(HardwareInterfaceCLASS this)	{
+/* HardwareInterface.vdmrt 29:27 */
+TVP ret_30 = _Z8RealPortER(NULL, newReal(0.0))
 ;
 
-return ret_10;
+return ret_30;
 }
 
 
 
- static  TVP _Z18fieldInitializer12EV(HardwareInterfaceCLASS this)	{
-/* HardwareInterface.vdmrt 26:29 */
-TVP ret_11 = _Z10StringPortE1QC(NULL, newSeqVar(0, NULL))
+ static  TVP _Z18fieldInitializer24EV(HardwareInterfaceCLASS this)	{
+/* HardwareInterface.vdmrt 26:26 */
+TVP ret_31 = _Z7IntPortEI(NULL, newInt(0))
 ;
 
-return ret_11;
+return ret_31;
 }
 
 
 
- static  TVP _Z18fieldInitializer11EV(HardwareInterfaceCLASS this)	{
+ static  TVP _Z18fieldInitializer23EV(HardwareInterfaceCLASS this)	{
 /* HardwareInterface.vdmrt 23:27 */
-TVP ret_12 = _Z8RealPortER(NULL, newReal(0.0))
+TVP ret_32 = _Z8BoolPortEB(NULL, newBool(false))
 ;
 
-return ret_12;
+return ret_32;
 }
 
 
 
- static  TVP _Z18fieldInitializer10EV(HardwareInterfaceCLASS this)	{
-/* HardwareInterface.vdmrt 20:26 */
-TVP ret_13 = _Z7IntPortEI(NULL, newInt(0))
+ static  TVP _Z18fieldInitializer22EV()	{
+
+TVP ret_33 = newInt(6)
 ;
 
-return ret_13;
+return ret_33;
 }
 
 
 
- static  TVP _Z17fieldInitializer9EV(HardwareInterfaceCLASS this)	{
-/* HardwareInterface.vdmrt 17:27 */
-TVP ret_14 = _Z8BoolPortEB(NULL, newBool(false))
+ static  TVP _Z18fieldInitializer21EV(HardwareInterfaceCLASS this)	{
+
+TVP ret_34 = newInt(6)
 ;
 
-return ret_14;
-}
-
-
-
- static  TVP _Z17fieldInitializer8EV()	{
-
-TVP ret_15 = newInt(8)
-;
-
-return ret_15;
-}
-
-
-
- static  TVP _Z17fieldInitializer7EV(HardwareInterfaceCLASS this)	{
-
-TVP ret_16 = newInt(8)
-;
-
-return ret_16;
+return ret_34;
 }
 
 
 
  void HardwareInterface_const_init()	{
 
-numFields_3 = _Z17fieldInitializer8EV();
+numFields_6 = _Z18fieldInitializer22EV();
 
 return ;
 }
@@ -156,7 +134,7 @@ return ;
 
  void HardwareInterface_const_shutdown()	{
 
-vdmFree(numFields_3);
+vdmFree(numFields_6);
 
 return ;
 }
@@ -218,15 +196,13 @@ HardwareInterfaceCLASS HardwareInterface_Constructor(HardwareInterfaceCLASS this
 		this_ptr->_HardwareInterface_refs = 0;
 		this_ptr->_HardwareInterface_pVTable=VTableArrayForHardwareInterface;
 
-				this_ptr->m_HardwareInterface_numFields= _Z17fieldInitializer7EV(this_ptr);
-									this_ptr->m_HardwareInterface_cbp= _Z17fieldInitializer9EV(this_ptr);
-						this_ptr->m_HardwareInterface_cip= _Z18fieldInitializer10EV(this_ptr);
-						this_ptr->m_HardwareInterface_crp= _Z18fieldInitializer11EV(this_ptr);
-						this_ptr->m_HardwareInterface_csp= _Z18fieldInitializer12EV(this_ptr);
-						this_ptr->m_HardwareInterface_mbp= _Z18fieldInitializer13EV(this_ptr);
-						this_ptr->m_HardwareInterface_mip= _Z18fieldInitializer14EV(this_ptr);
-						this_ptr->m_HardwareInterface_mrp= _Z18fieldInitializer15EV(this_ptr);
-						this_ptr->m_HardwareInterface_msp= _Z18fieldInitializer16EV(this_ptr);
+				this_ptr->m_HardwareInterface_numFields= _Z18fieldInitializer21EV(this_ptr);
+									this_ptr->m_HardwareInterface_cbp= _Z18fieldInitializer23EV(this_ptr);
+						this_ptr->m_HardwareInterface_cip= _Z18fieldInitializer24EV(this_ptr);
+						this_ptr->m_HardwareInterface_crp= _Z18fieldInitializer25EV(this_ptr);
+						this_ptr->m_HardwareInterface_mbp= _Z18fieldInitializer26EV(this_ptr);
+						this_ptr->m_HardwareInterface_mip= _Z18fieldInitializer27EV(this_ptr);
+						this_ptr->m_HardwareInterface_mrp= _Z18fieldInitializer28EV(this_ptr);
 			}
 
 	return this_ptr;
@@ -250,7 +226,7 @@ static TVP new()
  --------------------------------- */ 
  
 
-    /* HardwareInterface.vdmrt 9:7 */
+    /* HardwareInterface.vdmrt 15:7 */
  TVP _Z17HardwareInterfaceEV(HardwareInterfaceCLASS this)	{
 
 TVP __buf = NULL
@@ -279,5 +255,5 @@ return __buf;
  --------------------------------- */
  
 /*  initialize globals - this is done last since they are declared in the header but uses init functions which are printet in any order  */
-		TVP numFields_3 =  NULL ;
-									
+		TVP numFields_6 =  NULL ;
+							

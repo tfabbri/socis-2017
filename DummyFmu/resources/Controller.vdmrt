@@ -28,11 +28,11 @@ operations
 		hwi.crp.setValue(hwi.mrp.getValue());
 		
 		-- dump the String monitored variables
-		IO`print("msp = \""); IO`print(hwi.msp.getValue()); IO`print("\"\n");
+		-- IO`print("msp = \""); IO`print(hwi.msp.getValue()); IO`print("\"\n");
 		-- wrap output after 20 characters
-		if len hwi.msp.getValue() <= 20
-		then hwi.csp.setValue(hwi.msp.getValue())
-		else hwi.csp.setValue("")
+		-- if len hwi.msp.getValue() <= 20
+		-- then hwi.csp.setValue(hwi.msp.getValue())
+		-- else hwi.csp.setValue("")
 	)
 	
 thread

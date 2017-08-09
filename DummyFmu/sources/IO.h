@@ -36,7 +36,7 @@
  *
  --------------------------------- */ 
  
-extern TVP numFields_6;
+extern TVP numFields_5;
 
 
 /* -------------------------------
@@ -47,7 +47,7 @@ extern TVP numFields_6;
  
 
 /*  class id  */
-#define CLASS_ID_IO_ID 9
+#define CLASS_ID_IO_ID 8
 
 #define IOCLASS struct IO*
 

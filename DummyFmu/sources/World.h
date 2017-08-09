@@ -30,7 +30,7 @@
  *
  --------------------------------- */ 
  
-extern TVP numFields_4;
+extern TVP numFields_3;
 
 
 /* -------------------------------
@@ -41,7 +41,7 @@ extern TVP numFields_4;
  
 
 /*  class id  */
-#define CLASS_ID_World_ID 3
+#define CLASS_ID_World_ID 2
 
 #define WorldCLASS struct World*
 

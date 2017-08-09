@@ -40,7 +40,7 @@
  
 
 /*  class id  */
-#define CLASS_ID_RealPort_ID 7
+#define CLASS_ID_RealPort_ID 6
 
 #define RealPortCLASS struct RealPort*
 

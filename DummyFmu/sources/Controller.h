@@ -17,7 +17,6 @@
 #include "BoolPort.h"
 #include "Controller.h"
 #include "RealPort.h"
-#include "StringPort.h"
 
 
 /* -------------------------------

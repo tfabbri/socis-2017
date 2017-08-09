@@ -1,3 +1,6 @@
+--##	EXPORT	10f6e6a7f9b1cf87930c6369fc87af76ca24db0d	ControllerFmu.fmu	2017-09-08 23:44:02	c-code	{"name":"fmu-import-export","version":"0.2.7-SNAPSHOT"}
+--##	EXPORT	f43757cf2ef7bbb67da4452f137d1260bd04ba1b	ControllerFmu.fmu	2017-09-08 23:42:45	c-code	{"name":"fmu-import-export","version":"0.2.7-SNAPSHOT"}
+--##	EXPORT	a191a6f116d49934a0e372f4e88252f5f9bbafc3	ControllerFmu.fmu	2017-09-08 23:41:43	c-code	{"name":"fmu-import-export","version":"0.2.7-SNAPSHOT"}
 --##	EXPORT	33b5156917af9b2500ef578edc328148b7a7c71d	ControllerFmu.fmu	2017-09-08 22:50:00	c-code	{"name":"fmu-import-export","version":"0.2.9-SNAPSHOT"}
 --##	EXPORT	1d645a2bc9c5e84f8e360889e50f948432bdd85	ControllerFmu.fmu	2017-09-08 11:21:02	c-code	{"name":"fmu-import-export","version":"0.2.8"}
 --##	EXPORT	c0b625718062c2e9cf636c54cf775826b56a3f32	ControllerFmu.fmu	2017-09-08 10:58:20	c-code	{"name":"fmu-import-export","version":"0.2.8"}
@@ -26,8 +29,6 @@ instance variables
 	-- @ interface: type = output, name="crp";
 	public crp : RealPort := new RealPort(0.0);
 	
-	-- @ interface: type = output, name="csp";
-	public csp : StringPort := new StringPort("");
 	
 	-------------------------
 	-- monitored variables --
@@ -42,7 +43,5 @@ instance variables
 	-- @ interface: type = input, name="mrp";
 	public mrp : RealPort := new RealPort(0.0);
 	
-	-- @ interface: type = input, name="msp";	
-	public msp : StringPort := new StringPort("");
 	
 end HardwareInterface

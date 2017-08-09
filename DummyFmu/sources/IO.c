@@ -37,22 +37,22 @@ static void IO_free(struct IO *this)
  --------------------------------- */
  
 
- static  TVP _Z18fieldInitializer30EV()	{
+ static  TVP _Z18fieldInitializer20EV()	{
 
-TVP ret_33 = newInt(0)
+TVP ret_23 = newInt(0)
 ;
 
-return ret_33;
+return ret_23;
 }
 
 
 
- static  TVP _Z18fieldInitializer29EV(IOCLASS this)	{
+ static  TVP _Z18fieldInitializer19EV(IOCLASS this)	{
 
-TVP ret_34 = newInt(0)
+TVP ret_24 = newInt(0)
 ;
 
-return ret_34;
+return ret_24;
 }
 
 
@@ -122,7 +122,7 @@ return vdm_IO_freadval(filename);
 
  void IO_const_init()	{
 
-numFields_6 = _Z18fieldInitializer30EV();
+numFields_5 = _Z18fieldInitializer20EV();
 
 return ;
 }
@@ -131,7 +131,7 @@ return ;
 
  void IO_const_shutdown()	{
 
-vdmFree(numFields_6);
+vdmFree(numFields_5);
 
 return ;
 }
@@ -202,7 +202,7 @@ IOCLASS IO_Constructor(IOCLASS this_ptr)
 		this_ptr->_IO_refs = 0;
 		this_ptr->_IO_pVTable=VTableArrayForIO;
 
-				this_ptr->m_IO_numFields= _Z18fieldInitializer29EV(this_ptr);
+				this_ptr->m_IO_numFields= _Z18fieldInitializer19EV(this_ptr);
 						}
 
 	return this_ptr;
@@ -255,5 +255,5 @@ return __buf;
  --------------------------------- */
  
 /*  initialize globals - this is done last since they are declared in the header but uses init functions which are printet in any order  */
-		TVP numFields_6 =  NULL ;
+		TVP numFields_5 =  NULL ;
 	

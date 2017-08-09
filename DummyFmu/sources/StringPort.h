@@ -40,7 +40,7 @@
  
 
 /*  class id  */
-#define CLASS_ID_StringPort_ID 8
+#define CLASS_ID_StringPort_ID 7
 
 #define StringPortCLASS struct StringPort*
 

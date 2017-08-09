@@ -15,7 +15,6 @@
 #include "HardwareInterface.h"
 #include "BoolPort.h"
 #include "RealPort.h"
-#include "StringPort.h"
 
 
 /* -------------------------------
@@ -32,7 +31,7 @@
  *
  --------------------------------- */ 
  
-extern TVP numFields_3;
+extern TVP numFields_6;
 
 
 /* -------------------------------
@@ -43,7 +42,7 @@ extern TVP numFields_3;
  
 
 /*  class id  */
-#define CLASS_ID_HardwareInterface_ID 2
+#define CLASS_ID_HardwareInterface_ID 9
 
 #define HardwareInterfaceCLASS struct HardwareInterface*
 
@@ -60,11 +59,9 @@ struct HardwareInterface
 	VDM_CLASS_FIELD_DEFINITION(HardwareInterface,cbp);
 	VDM_CLASS_FIELD_DEFINITION(HardwareInterface,cip);
 	VDM_CLASS_FIELD_DEFINITION(HardwareInterface,crp);
-	VDM_CLASS_FIELD_DEFINITION(HardwareInterface,csp);
 	VDM_CLASS_FIELD_DEFINITION(HardwareInterface,mbp);
 	VDM_CLASS_FIELD_DEFINITION(HardwareInterface,mip);
 	VDM_CLASS_FIELD_DEFINITION(HardwareInterface,mrp);
-	VDM_CLASS_FIELD_DEFINITION(HardwareInterface,msp);
 	
 };
 
@@ -76,7 +73,7 @@ struct HardwareInterface
  --------------------------------- */ 
  
   
-  	/* HardwareInterface.vdmrt 9:7 */
+  	/* HardwareInterface.vdmrt 15:7 */
 	TVP _Z17HardwareInterfaceEV(HardwareInterfaceCLASS this_); 
 
 

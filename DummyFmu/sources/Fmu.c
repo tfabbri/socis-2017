@@ -260,23 +260,14 @@ fmi2Status fmi2CancelStep(fmi2Component c)
 fmi2Status fmi2DoStep(fmi2Component c, fmi2Real currentCommunicationPoint, fmi2Real communicationStepSize,
 		fmi2Boolean noSetFMUStatePriorToCurrentPoint)
 {
-	//fmi2Status stepStatus;
 
 	//syncInputsToModel();
 	//stepStatus = vdmStep(currentCommunicationPoint, communicationStepSize);
 	//syncOutputsToBuffers();
-        //return fmi2OK;
-        /* 
-         * The variable fmibuffer is the container of the state of the input and output variables, 
-         * in order to develop a dummy fmu is necessary to modify only the body of this function 
-         * executing the simulation of the system (calling therefore the input/output functions.
-         */
-        fmiBuffer.intBuffer[1] = 0;
-        fmiBuffer.realBuffer[2] = 0;
-        fmiBuffer.booleanBuffer[0] = 0;
-        //fmiBuffer.[3] = ""; 
-        return fmi2OK;
-	//return stepStatus;
+    fmiBuffer.realBuffer[2] = 0;
+    fmiBuffer.booleanBuffer[3] = false;
+    fmiBuffer.intBuffer[1] = -10;
+	return fmi2OK;
 }
 
 fmi2Status fmi2GetStatus(fmi2Component c, const fmi2StatusKind s, fmi2Status *value)
