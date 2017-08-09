@@ -1,0 +1,21 @@
+system CtrlSys
+
+instance variables
+  -- hardware interface variable required by FMU Import/Export
+  public static hwi: HardwareInterface := new HardwareInterface();
+  
+  -- create the controller instance
+  public static ctrl : Controller := new Controller(hwi);
+  
+	-- create a single CPU to deploy the controller
+  cpu : CPU := new CPU(<FP>, 100E6)
+
+operations
+
+	public CtrlSys : () ==> CtrlSys
+	CtrlSys () == (
+		-- deploy the controller on the CPU
+		cpu.deploy(ctrl, "Controller")
+	)
+
+end CtrlSys

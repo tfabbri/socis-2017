@@ -1,0 +1,41 @@
+class Controller
+
+instance variables
+	hwi : HardwareInterface
+	
+operations
+	public Controller: HardwareInterface ==> Controller
+	Controller (phwi) == hwi := phwi;
+	
+	public step: () ==> ()
+	step () == (
+		-- announce myself
+		IO`print("\nHello, DE world\n");
+		
+		-- dump the Boolean monitored variables
+		IO`print("mbp = "); IO`print(hwi.mbp.getValue()); IO`print("\n");
+		-- copy value
+		hwi.cbp.setValue(hwi.mbp.getValue());
+		
+		-- dump the Integer monitored variables
+		IO`print("mip = "); IO`print(hwi.mip.getValue()); IO`print("\n");
+		-- copy value
+		hwi.cip.setValue(hwi.mip.getValue());
+		
+		-- dump the Real monitored variables
+		IO`print("mrp = "); IO`print(hwi.mrp.getValue()); IO`print("\n");
+		-- copy value
+		hwi.crp.setValue(hwi.mrp.getValue());
+		
+		-- dump the String monitored variables
+		IO`print("msp = \""); IO`print(hwi.msp.getValue()); IO`print("\"\n");
+		-- wrap output after 20 characters
+		if len hwi.msp.getValue() <= 20
+		then hwi.csp.setValue(hwi.msp.getValue())
+		else hwi.csp.setValue("")
+	)
+	
+thread
+	periodic (100E6, 0, 0, 0) (step)
+	
+end Controller
