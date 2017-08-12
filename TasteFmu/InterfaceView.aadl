@@ -1,0 +1,94 @@
+---------------------------------------------------
+-- AADL2.0
+-- TASTE
+-- 
+-- 
+---------------------------------------------------
+
+PACKAGE interfaceview::FV::Dummy
+PUBLIC
+
+WITH Taste;
+WITH DataView;
+WITH TASTE_IV_Properties;
+SUBPROGRAM PI_DummyFunction
+FEATURES
+  mrp : IN PARAMETER DataView::MyReal {
+    Taste::encoding => NATIVE;
+  };
+  mip : IN PARAMETER DataView::MyInteger {
+    Taste::encoding => NATIVE;
+  };
+  mbp : IN PARAMETER DataView::MyBool {
+    Taste::encoding => NATIVE;
+  };
+  cip : OUT PARAMETER DataView::MyInteger {
+    Taste::encoding => NATIVE;
+  };
+  cbp : OUT PARAMETER DataView::MyBool {
+    Taste::encoding => NATIVE;
+  };
+  crp : OUT PARAMETER DataView::MyReal {
+    Taste::encoding => NATIVE;
+  };
+END PI_DummyFunction;
+
+SUBPROGRAM IMPLEMENTATION PI_DummyFunction.others
+END PI_DummyFunction.others;
+
+END interfaceview::FV::Dummy;
+
+PACKAGE interfaceview::IV
+PUBLIC
+
+WITH interfaceview::FV::Dummy;
+WITH interfaceview::FV;
+WITH Taste;
+WITH DataView;
+WITH TASTE_IV_Properties;
+SYSTEM Dummy
+FEATURES
+  PI_DummyFunction : PROVIDES SUBPROGRAM ACCESS interfaceview::FV::Dummy::PI_DummyFunction.others {
+    Taste::coordinates => "1139 313";
+    Taste::RCMoperationKind => unprotected;
+    Taste::Deadline => 0 ms;
+    Taste::InterfaceName => "DummyFunction";
+  };
+PROPERTIES
+  Source_Language => (C);
+END Dummy;
+
+SYSTEM IMPLEMENTATION Dummy.others
+SUBCOMPONENTS
+  DummyFunction_impl : SUBPROGRAM interfaceview::FV::Dummy::PI_DummyFunction.others {
+    Compute_Execution_Time => 0 ms .. 0 ms;
+  };
+CONNECTIONS
+  OpToPICnx_DummyFunction_impl : SUBPROGRAM ACCESS DummyFunction_impl -> PI_DummyFunction;
+END Dummy.others;
+
+SYSTEM interfaceview
+END interfaceview;
+
+SYSTEM IMPLEMENTATION interfaceview.others
+SUBCOMPONENTS
+  Dummy : SYSTEM interfaceview::IV::Dummy.others {
+    Taste::coordinates => "723 313 1503 1164";
+  };
+END interfaceview.others;
+
+PROPERTIES
+  Taste::dataView => ("DataView");
+  Taste::dataViewPath => ("DataView.aadl");
+  Taste::coordinates => "0 0 2970 2100";
+  Taste::version => "1.3.19";
+END interfaceview::IV;
+
+PACKAGE interfaceview::FV
+PUBLIC
+
+WITH Taste;
+WITH DataView;
+WITH TASTE_IV_Properties;
+END interfaceview::FV;
+
