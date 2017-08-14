@@ -13,12 +13,12 @@ extern "C" {
 
 void dummy_startup();
 
-void dummy_PI_DummyFunction(const asn1SccMyReal *,
-                            const asn1SccMyInteger *,
-                            const asn1SccMyBool *,
-                            asn1SccMyInteger *,
-                            asn1SccMyBool *,
-                            asn1SccMyReal *);
+void dummy_PI_DummyFunction(const asn1SccFmiReal *,
+                            const asn1SccFmiInterger *,
+                            const asn1SccFmiBoolean *,
+                            asn1SccFmiInterger *,
+                            asn1SccFmiBoolean *,
+                            asn1SccFmiReal *);
 
 #ifdef __cplusplus
 }

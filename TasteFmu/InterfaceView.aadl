@@ -13,22 +13,22 @@ WITH DataView;
 WITH TASTE_IV_Properties;
 SUBPROGRAM PI_DummyFunction
 FEATURES
-  mrp : IN PARAMETER DataView::MyReal {
+  mrp : IN PARAMETER DataView::FmiReal {
     Taste::encoding => NATIVE;
   };
-  mip : IN PARAMETER DataView::MyInteger {
+  mip : IN PARAMETER DataView::FmiInterger {
     Taste::encoding => NATIVE;
   };
-  mbp : IN PARAMETER DataView::MyBool {
+  mbp : IN PARAMETER DataView::FmiBoolean {
     Taste::encoding => NATIVE;
   };
-  cip : OUT PARAMETER DataView::MyInteger {
+  cip : OUT PARAMETER DataView::FmiInterger {
     Taste::encoding => NATIVE;
   };
-  cbp : OUT PARAMETER DataView::MyBool {
+  cbp : OUT PARAMETER DataView::FmiBoolean {
     Taste::encoding => NATIVE;
   };
-  crp : OUT PARAMETER DataView::MyReal {
+  crp : OUT PARAMETER DataView::FmiReal {
     Taste::encoding => NATIVE;
   };
 END PI_DummyFunction;

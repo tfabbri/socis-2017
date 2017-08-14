@@ -8,12 +8,12 @@ void dummy_startup()
        but do not make any call to a required interface. */
 }
 
-void dummy_PI_DummyFunction(const asn1SccMyReal *IN_mrp,
-                            const asn1SccMyInteger *IN_mip,
-                            const asn1SccMyBool *IN_mbp,
-                            asn1SccMyInteger *OUT_cip,
-                            asn1SccMyBool *OUT_cbp,
-                            asn1SccMyReal *OUT_crp)
+void dummy_PI_DummyFunction(const asn1SccFmiReal *IN_mrp,
+                            const asn1SccFmiInterger *IN_mip,
+                            const asn1SccFmiBoolean *IN_mbp,
+                            asn1SccFmiInterger *OUT_cip,
+                            asn1SccFmiBoolean *OUT_cbp,
+                            asn1SccFmiReal *OUT_crp)
 {
     /* Write your code here! */
 }
