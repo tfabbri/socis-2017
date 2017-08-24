@@ -1,0 +1,171 @@
+---------------------------------------------------
+-- AADL2.0
+-- TASTE
+-- 
+-- 
+---------------------------------------------------
+
+PACKAGE interfaceview::FV::Controller
+PUBLIC
+
+WITH Taste;
+WITH DataView;
+WITH TASTE_IV_Properties;
+SUBPROGRAM PI_Controller_Function
+FEATURES
+  mip : IN PARAMETER DataView::FmiInteger {
+    Taste::encoding => NATIVE;
+  };
+  cip : OUT PARAMETER DataView::FmiInteger {
+    Taste::encoding => NATIVE;
+  };
+  mbp : IN PARAMETER DataView::FmiBoolean {
+    Taste::encoding => NATIVE;
+  };
+  cbp : OUT PARAMETER DataView::FmiBoolean {
+    Taste::encoding => NATIVE;
+  };
+  mrp : IN PARAMETER DataView::FmiReal {
+    Taste::encoding => NATIVE;
+  };
+  crp : OUT PARAMETER DataView::FmiReal {
+    Taste::encoding => NATIVE;
+  };
+END PI_Controller_Function;
+
+SUBPROGRAM IMPLEMENTATION PI_Controller_Function.others
+END PI_Controller_Function.others;
+
+END interfaceview::FV::Controller;
+
+PACKAGE interfaceview::FV::FMI_Interface
+PUBLIC
+
+WITH Taste;
+WITH DataView;
+WITH TASTE_IV_Properties;
+SUBPROGRAM PI_Cyclic_Call
+PROPERTIES
+  Taste::Associated_Queue_Size => 1;
+END PI_Cyclic_Call;
+
+SUBPROGRAM IMPLEMENTATION PI_Cyclic_Call.others
+END PI_Cyclic_Call.others;
+
+SUBPROGRAM RI_Controller_Function
+FEATURES
+  mip : IN PARAMETER DataView::FmiInteger {
+    Taste::encoding => NATIVE;
+  };
+  cip : OUT PARAMETER DataView::FmiInteger {
+    Taste::encoding => NATIVE;
+  };
+  mbp : IN PARAMETER DataView::FmiBoolean {
+    Taste::encoding => NATIVE;
+  };
+  cbp : OUT PARAMETER DataView::FmiBoolean {
+    Taste::encoding => NATIVE;
+  };
+  mrp : IN PARAMETER DataView::FmiReal {
+    Taste::encoding => NATIVE;
+  };
+  crp : OUT PARAMETER DataView::FmiReal {
+    Taste::encoding => NATIVE;
+  };
+END RI_Controller_Function;
+
+SUBPROGRAM IMPLEMENTATION RI_Controller_Function.others
+END RI_Controller_Function.others;
+
+END interfaceview::FV::FMI_Interface;
+
+PACKAGE interfaceview::IV
+PUBLIC
+
+WITH interfaceview::FV::Controller;
+WITH interfaceview::FV::FMI_Interface;
+WITH interfaceview::FV;
+WITH Taste;
+WITH DataView;
+WITH TASTE_IV_Properties;
+SYSTEM Controller
+FEATURES
+  PI_Controller_Function : PROVIDES SUBPROGRAM ACCESS interfaceview::FV::Controller::PI_Controller_Function.others {
+    Taste::coordinates => "1872 599";
+    Taste::RCMoperationKind => unprotected;
+    Taste::Deadline => 0 ms;
+    Taste::InterfaceName => "Controller_Function";
+  };
+PROPERTIES
+  Source_Language => (C);
+END Controller;
+
+SYSTEM IMPLEMENTATION Controller.others
+SUBCOMPONENTS
+  Controller_Function_impl : SUBPROGRAM interfaceview::FV::Controller::PI_Controller_Function.others {
+    Compute_Execution_Time => 0 ms .. 0 ms;
+  };
+CONNECTIONS
+  OpToPICnx_Controller_Function_impl : SUBPROGRAM ACCESS Controller_Function_impl -> PI_Controller_Function;
+END Controller.others;
+
+SYSTEM FMI_Interface
+FEATURES
+  PI_Cyclic_Call : PROVIDES SUBPROGRAM ACCESS interfaceview::FV::FMI_Interface::PI_Cyclic_Call.others {
+    Taste::coordinates => "1138 969";
+    Taste::RCMoperationKind => cyclic;
+    Taste::RCMperiod => 100 ms;
+    Taste::Deadline => 0 ms;
+    Taste::InterfaceName => "Cyclic_Call";
+  };
+  RI_Controller_Function : REQUIRES SUBPROGRAM ACCESS interfaceview::FV::Controller::PI_Controller_Function.others {
+    Taste::coordinates => "1138 599";
+    Taste::RCMoperationKind => any;
+    Taste::InterfaceName => "Controller_Function";
+    Taste::labelInheritance => "true";
+  };
+PROPERTIES
+  Source_Language => (C);
+END FMI_Interface;
+
+SYSTEM IMPLEMENTATION FMI_Interface.others
+SUBCOMPONENTS
+  Cyclic_Call_impl : SUBPROGRAM interfaceview::FV::FMI_Interface::PI_Cyclic_Call.others {
+    Compute_Execution_Time => 0 ms .. 0 ms;
+  };
+CONNECTIONS
+  OpToPICnx_Cyclic_Call_impl : SUBPROGRAM ACCESS Cyclic_Call_impl -> PI_Cyclic_Call;
+END FMI_Interface.others;
+
+SYSTEM interfaceview
+END interfaceview;
+
+SYSTEM IMPLEMENTATION interfaceview.others
+SUBCOMPONENTS
+  Controller : SYSTEM interfaceview::IV::Controller.others {
+    Taste::coordinates => "1872 390 2652 1241";
+  };
+  FMI_Interface : SYSTEM interfaceview::IV::FMI_Interface.others {
+    Taste::coordinates => "451 390 1138 1236";
+  };
+CONNECTIONS
+  Controller_Controller_Function_FMI_Interface_Controller_Function : SUBPROGRAM ACCESS Controller.PI_Controller_Function -> FMI_Interface.RI_Controller_Function {
+    Taste::coordinates => "1138 599 1502 599 1502 599 1872 599";
+  };
+END interfaceview.others;
+
+PROPERTIES
+  Taste::dataView => ("DataView");
+  Taste::dataViewPath => ("DataView.aadl");
+  Taste::coordinates => "0 0 2970 2100";
+  Taste::version => "1.3.19";
+END interfaceview::IV;
+
+PACKAGE interfaceview::FV
+PUBLIC
+
+WITH Taste;
+WITH DataView;
+WITH TASTE_IV_Properties;
+END interfaceview::FV;
+

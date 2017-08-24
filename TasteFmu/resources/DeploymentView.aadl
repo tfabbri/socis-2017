@@ -33,9 +33,13 @@ END Node1;
 
 SYSTEM IMPLEMENTATION Node1.others
 SUBCOMPONENTS
-  IV_Dummy : SYSTEM interfaceview::IV::Dummy.others {
-    Taste::coordinates => "723 882 1236 1011";
-    Taste::FunctionName => "Dummy";
+  IV_Controller : SYSTEM interfaceview::IV::Controller.others {
+    Taste::coordinates => "656 836 1077 933";
+    Taste::FunctionName => "Controller";
+  };
+  IV_FMI_Interface : SYSTEM interfaceview::IV::FMI_Interface.others {
+    Taste::coordinates => "667 965 1154 1072";
+    Taste::FunctionName => "FMI_Interface";
   };
   x86_partition : PROCESS deploymentview::DV::Node1::x86_partition.others {
     Taste::coordinates => "592 732 1639 1122";
@@ -45,7 +49,8 @@ SUBCOMPONENTS
     Taste::coordinates => "461 621 1770 1178";
   };
 PROPERTIES
-  Taste::APLC_Binding => (reference (x86_partition)) APPLIES TO IV_Dummy;
+  Taste::APLC_Binding => (reference (x86_partition)) APPLIES TO IV_Controller;
+  Taste::APLC_Binding => (reference (x86_partition)) APPLIES TO IV_FMI_Interface;
   Actual_Processor_Binding => (reference (x86_linux32)) APPLIES TO x86_partition;
 END Node1.others;
 

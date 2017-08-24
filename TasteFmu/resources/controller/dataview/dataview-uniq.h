@@ -68,16 +68,16 @@ flag asn1SccT_Int32_IsConstraintValid(const asn1SccT_Int32* val, int* pErrCode);
 #define ERR_asn1SccT_Int32		1003  /*(-2147483648 .. 2147483647)*/
 #endif
 
-typedef asn1SccT_Int32 asn1SccFmiInterger;
+typedef asn1SccT_Int32 asn1SccFmiInteger;
 
-#define asn1SccFmiInterger_REQUIRED_BYTES_FOR_ENCODING       4 
-#define asn1SccFmiInterger_REQUIRED_BITS_FOR_ENCODING        32
-#define asn1SccFmiInterger_REQUIRED_BYTES_FOR_ACN_ENCODING   4 
-#define asn1SccFmiInterger_REQUIRED_BITS_FOR_ACN_ENCODING    32
-#define asn1SccFmiInterger_REQUIRED_BYTES_FOR_XER_ENCODING   47
+#define asn1SccFmiInteger_REQUIRED_BYTES_FOR_ENCODING       4 
+#define asn1SccFmiInteger_REQUIRED_BITS_FOR_ENCODING        32
+#define asn1SccFmiInteger_REQUIRED_BYTES_FOR_ACN_ENCODING   4 
+#define asn1SccFmiInteger_REQUIRED_BITS_FOR_ACN_ENCODING    32
+#define asn1SccFmiInteger_REQUIRED_BYTES_FOR_XER_ENCODING   45
 
-void asn1SccFmiInterger_Initialize(asn1SccFmiInterger* pVal);
-flag asn1SccFmiInterger_IsConstraintValid(const asn1SccFmiInterger* val, int* pErrCode);
+void asn1SccFmiInteger_Initialize(asn1SccFmiInteger* pVal);
+flag asn1SccFmiInteger_IsConstraintValid(const asn1SccFmiInteger* val, int* pErrCode);
 
 
 typedef asn1SccUint asn1SccT_UInt32;
@@ -149,8 +149,8 @@ flag asn1SccFmiString_Encode(const asn1SccFmiString* val, BitStream* pBitStrm, i
 flag asn1SccFmiString_Decode(asn1SccFmiString* pVal, BitStream* pBitStrm, int* pErrCode);
 flag asn1SccT_Int32_Encode(const asn1SccT_Int32* val, BitStream* pBitStrm, int* pErrCode, flag bCheckConstraints);
 flag asn1SccT_Int32_Decode(asn1SccT_Int32* pVal, BitStream* pBitStrm, int* pErrCode);
-flag asn1SccFmiInterger_Encode(const asn1SccFmiInterger* val, BitStream* pBitStrm, int* pErrCode, flag bCheckConstraints);
-flag asn1SccFmiInterger_Decode(asn1SccFmiInterger* pVal, BitStream* pBitStrm, int* pErrCode);
+flag asn1SccFmiInteger_Encode(const asn1SccFmiInteger* val, BitStream* pBitStrm, int* pErrCode, flag bCheckConstraints);
+flag asn1SccFmiInteger_Decode(asn1SccFmiInteger* pVal, BitStream* pBitStrm, int* pErrCode);
 flag asn1SccT_UInt32_Encode(const asn1SccT_UInt32* val, BitStream* pBitStrm, int* pErrCode, flag bCheckConstraints);
 flag asn1SccT_UInt32_Decode(asn1SccT_UInt32* pVal, BitStream* pBitStrm, int* pErrCode);
 flag asn1SccT_Int8_Encode(const asn1SccT_Int8* val, BitStream* pBitStrm, int* pErrCode, flag bCheckConstraints);
