@@ -14,27 +14,24 @@
 
 #include "fmi_interface.h"
 
-#define SEM_NAME "/pSem"
-#define SEM_PERMS (S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP)
-#define SHM_NAME "/tmp"
-#define SHM_MODE (IPC_CREAT | 0644) 
-#define SHM_ID   'm'
+//#define SEM_NAME "/pSem"
+//#define SEM_PERMS (S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP)
+//#define SHM_NAME "/pShm"
+//
+//
+//struct shm_struct{
+//    asn1SccFmiInteger mip; // integer input port
+//    asn1SccFmiInteger cip; // integer output port
+//    asn1SccFmiBoolean mbp;
+//    asn1SccFmiBoolean cbp;
+//    asn1SccFmiReal mrp;
+//    asn1SccFmiReal crp; 
+//};
+
+#include "common.h"
 
 sem_t* semaphore;  // Mutex on the shared memory
-key_t shm_key;     // Shared memory id
-
-struct shm_struct{
-    asn1SccFmiInteger mip; // integer input port
-    asn1SccFmiInteger cip; // integer output port
-    asn1SccFmiBoolean mbp;
-    asn1SccFmiBoolean cbp;
-    asn1SccFmiReal mrp;
-    asn1SccFmiReal crp; 
-};
-
-
 struct shm_struct *shm_memory;
-
 int shm_memory_fd;
 
 void fmi_interface_startup()
@@ -53,24 +50,12 @@ void fmi_interface_startup()
         perror("Sem_open(3) error\n");
         exit(1);
     }
-
-    //if ((shm_key = ftok(SHM_PATH, SHM_ID))== (key_t) - 1){
-    //    perror("IPC error - ftok call\n");
-    //    exit(1); 
-    //}
-
-
     if((shm_memory_fd = shm_open(SHM_NAME,(O_CREAT|O_RDWR), 0666)) == -1){
         perror("Shm get error\n"); 
         exit(1);
     }
     ftruncate(shm_memory_fd, sizeof(struct shm_struct));
     shm_memory = (struct shm_struct *) mmap(0, sizeof(struct shm_struct), PROT_WRITE, MAP_SHARED, shm_memory_fd, 0);
-
-    //if((shm_memory = (struct shm_struct *)shmat(shm_memory_id, NULL, 0)) == (void*) -1 ){ // Attached to shared memory
-    //    perror("Shm get error\n"); 
-    //    exit(1);
-    //}
 
 }
 

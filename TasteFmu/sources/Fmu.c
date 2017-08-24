@@ -9,7 +9,11 @@
 
 #include "Fmu.h"
 
+#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+#include <common.h>
+
 
 bool terminateSystemThread = false;
 bool isTerminated = false;
@@ -24,30 +28,48 @@ extern fmi2Real maxStepSize;
 *  FMI functions
 *  ---------------------------------------------------------------------------
 */
+sem_t* semaphore;  // Mutex on the shared memory
+struct shm_struct *shm_memory;
+int shm_memory_fd;
+
+
 fmi2Component fmi2Instantiate(fmi2String instanceName, fmi2Type fmuType, fmi2String fmuGUID,
 		fmi2String fmuResourceLocation, const fmi2CallbackFunctions *functions, fmi2Boolean visible,
 		fmi2Boolean loggingOn)
 {
-	char *tmpInstanceName;
-	
-	g_fmiCallbackFunctions = functions;
-	
-	if(strcmp(fmuGUID, _FMU_GUID) != 0)
-	{
-		g_fmiCallbackFunctions->logger((void*) 1,g_fmiInstanceName,fmi2Error,"logError","%s\n", "GUID mismatch.");
-		return NULL;
-	}
 
-	tmpInstanceName = (char*)malloc(strlen(instanceName) + 1);
-	strcpy(tmpInstanceName, instanceName);
-	g_fmiInstanceName = tmpInstanceName;
+    char *tmpInstanceName;
+    
+    g_fmiCallbackFunctions = functions;
+    
+    if(strcmp(fmuGUID, _FMU_GUID) != 0)
+    {
+	    g_fmiCallbackFunctions->logger((void*) 1,g_fmiInstanceName,fmi2Error,"logError","%s\n", "GUID mismatch.");
+	    return NULL;
+    }
 
-	resourcesLocation = (char*)calloc(strlen(fmuResourceLocation) + 1, sizeof(char));
-	strcpy(resourcesLocation, fmuResourceLocation);
-	
-	systemInit();
+    tmpInstanceName = (char*)malloc(strlen(instanceName) + 1);
+    strcpy(tmpInstanceName, instanceName);
+    g_fmiInstanceName = tmpInstanceName;
 
-	return (void*) 1;
+    resourcesLocation = (char*)calloc(strlen(fmuResourceLocation) + 1, sizeof(char));
+    strcpy(resourcesLocation, fmuResourceLocation);
+    
+    semaphore = sem_open(SEM_NAME, O_CREAT, SEM_PERMS, 1);
+
+    if (semaphore == SEM_FAILED) {
+        perror("Sem_open(3) error\n");
+        exit(1);
+    }
+
+    if((shm_memory_fd = shm_open(SHM_NAME,(O_CREAT|O_RDWR), 0666)) == -1){
+        perror("Shm get error\n"); 
+        exit(1);
+    }
+    ftruncate(shm_memory_fd, sizeof(struct shm_struct));
+    shm_memory = (struct shm_struct *) mmap(0, sizeof(struct shm_struct), PROT_WRITE, MAP_SHARED, shm_memory_fd, 0);
+
+    return (void*) 1;
 }
 
 fmi2Status fmi2SetupExperiment(fmi2Component c, fmi2Boolean toleranceDefined, fmi2Real tolerance,
