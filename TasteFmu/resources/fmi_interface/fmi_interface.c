@@ -14,20 +14,6 @@
 
 #include "fmi_interface.h"
 
-//#define SEM_NAME "/pSem"
-//#define SEM_PERMS (S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP)
-//#define SHM_NAME "/pShm"
-//
-//
-//struct shm_struct{
-//    asn1SccFmiInteger mip; // integer input port
-//    asn1SccFmiInteger cip; // integer output port
-//    asn1SccFmiBoolean mbp;
-//    asn1SccFmiBoolean cbp;
-//    asn1SccFmiReal mrp;
-//    asn1SccFmiReal crp; 
-//};
-
 #include "common.h"
 
 sem_t* semaphore;  // Mutex on the shared memory

@@ -9,10 +9,13 @@
 
 #include "Fmu.h"
 
+#include <glib.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <common.h>
+#include <signal.h>
+#include <limits.h>
 
 
 bool terminateSystemThread = false;
@@ -20,27 +23,34 @@ bool isTerminated = false;
 struct FmiBuffer fmiBuffer;
 const fmi2CallbackFunctions *g_fmiCallbackFunctions;
 const char* g_fmiInstanceName;
-extern char* resourcesLocation;
-extern fmi2Real maxStepSize;
+static const char* resourcesLocation; // AbsolutePath of the resource location directory
+
+/* ---------------------------------------------------------------------------
+ *  TASTE interface variables
+ * ---------------------------------------------------------------------------
+ */
+
+sem_t* semaphore;  // Mutex on the shared memory
+struct shm_struct *shm_memory;
+int shm_memory_fd;
+int pid_taste_child;
+int taste_log_fd;
+static const char taste_log_path[] = "./taste-output.log";
+static const char taste_app_path[] = "binary.c/binaries/x86_partition";
 
 
 /* ---------------------------------------------------------------------------
 *  FMI functions
 *  ---------------------------------------------------------------------------
 */
-sem_t* semaphore;  // Mutex on the shared memory
-struct shm_struct *shm_memory;
-int shm_memory_fd;
-
 
 fmi2Component fmi2Instantiate(fmi2String instanceName, fmi2Type fmuType, fmi2String fmuGUID,
-		fmi2String fmuResourceLocation, const fmi2CallbackFunctions *functions, fmi2Boolean visible,
+		fmi2String fmuResourcesLocation, const fmi2CallbackFunctions *functions, fmi2Boolean visible,
 		fmi2Boolean loggingOn)
 {
 
     char *tmpInstanceName;
-    
-    g_fmiCallbackFunctions = functions;
+    char *tmpResourcesLocation;
     
     if(strcmp(fmuGUID, _FMU_GUID) != 0)
     {
@@ -52,22 +62,51 @@ fmi2Component fmi2Instantiate(fmi2String instanceName, fmi2Type fmuType, fmi2Str
     strcpy(tmpInstanceName, instanceName);
     g_fmiInstanceName = tmpInstanceName;
 
-    resourcesLocation = (char*)calloc(strlen(fmuResourceLocation) + 1, sizeof(char));
-    strcpy(resourcesLocation, fmuResourceLocation);
+    tmpResourcesLocation = (char*)malloc(strlen(fmuResourcesLocation) + 1);
+    strcpy(tmpResourcesLocation, fmuResourcesLocation);
+    resourcesLocation = tmpResourcesLocation;
+    char *taste_app_abs_path;
+    printf("%s\n", resourcesLocation);
+    printf("%s\n", taste_app_path);
+    taste_app_abs_path = g_build_path("/", resourcesLocation, taste_app_path, NULL);
+
+    //resourcesLocation = (char*)calloc(strlen(fmuResourceLocation) + 1, sizeof(char));
+    //strcpy(resourcesLocation, fmuResourceLocation);
     
     semaphore = sem_open(SEM_NAME, O_CREAT, SEM_PERMS, 1);
 
     if (semaphore == SEM_FAILED) {
-        perror("Sem_open(3) error\n");
+        perror("Sem_open(3) error");
         exit(1);
     }
 
     if((shm_memory_fd = shm_open(SHM_NAME,(O_CREAT|O_RDWR), 0666)) == -1){
-        perror("Shm get error\n"); 
+        perror("Shm get error"); 
         exit(1);
     }
     ftruncate(shm_memory_fd, sizeof(struct shm_struct));
     shm_memory = (struct shm_struct *) mmap(0, sizeof(struct shm_struct), PROT_WRITE, MAP_SHARED, shm_memory_fd, 0);
+
+    int id_process = fork();
+
+    if(id_process == 0){
+        // Child process - Execute the TASTE app
+        pid_taste_child = getpid();
+        printf("Running the TASTE APP as child process\n");
+        // Redirect the output of taste app to log file
+        taste_log_fd = open( taste_log_path, O_RDWR | O_CREAT | S_IRWXU | S_IRUSR | S_IWUSR);
+        dup2(taste_log_fd, 1);
+        dup2(taste_log_fd, 2);
+        close(taste_log_fd);
+        execl(taste_app_abs_path, taste_app_abs_path, NULL);
+        perror("EXECL failed");
+        exit(127);
+    }
+
+    if(id_process > 0){
+        // Parent process - Do Nothing and continue its running
+        printf("Running the FMI interface parent process\n");
+    }
 
     return (void*) 1;
 }
@@ -100,7 +139,9 @@ fmi2Status fmi2Reset(fmi2Component c)
 
 void fmi2FreeInstance(fmi2Component c)
 {
-	systemDeInit();
+    kill(pid_taste_child, SIGTERM);
+    sem_unlink(SEM_NAME);
+    shm_unlink(SHM_NAME);
 }
 
 /* ---------------------------------------------------------------------------
@@ -282,14 +323,20 @@ fmi2Status fmi2CancelStep(fmi2Component c)
 fmi2Status fmi2DoStep(fmi2Component c, fmi2Real currentCommunicationPoint, fmi2Real communicationStepSize,
 		fmi2Boolean noSetFMUStatePriorToCurrentPoint)
 {
+    //syncInputsToModel();
+    sem_wait(semaphore);
+    shm_memory->mbp = fmiBuffer.intBuffer[3]; 
+    shm_memory->mip = fmiBuffer.realBuffer[4];
+    shm_memory->mrp = fmiBuffer.realBuffer[5];
 
-	//syncInputsToModel();
-	//stepStatus = vdmStep(currentCommunicationPoint, communicationStepSize);
-	//syncOutputsToBuffers();
-    fmiBuffer.realBuffer[2] = 0;
-    fmiBuffer.booleanBuffer[3] = false;
-    fmiBuffer.intBuffer[1] = -10;
-	return fmi2OK;
+    //stepStatus = vdmStep(currentCommunicationPoint, communicationStepSize);
+    
+    //syncOutputsToBuffers();
+    fmiBuffer.intBuffer[1] = shm_memory->cip;
+    fmiBuffer.booleanBuffer[0] = shm_memory->cbp;
+    fmiBuffer.realBuffer[2] = shm_memory->crp;
+    sem_post(semaphore);
+    return fmi2OK;
 }
 
 fmi2Status fmi2GetStatus(fmi2Component c, const fmi2StatusKind s, fmi2Status *value)
@@ -320,7 +367,7 @@ fmi2Status fmi2GetStringStatus(fmi2Component c, const fmi2StatusKind s, fmi2Stri
 /* INTO cps specific*/
 fmi2Status fmi2GetMaxStepsize(fmi2Component c, fmi2Real* size)
 {	
-	*size = maxStepSize;
+	*size = INT_MAX * 1.0;
 	return fmi2OK;
 }
 
