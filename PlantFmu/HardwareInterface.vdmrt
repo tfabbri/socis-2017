@@ -1,3 +1,7 @@
+--##	EXPORT	18c75ae379394fa7acc7ad4b840662a1df35fb3f	PlantFmu.fmu	2017-30-08 08:56:46	tool-wrapper	{"name":"fmu-import-export","version":"0.2.9-SNAPSHOT"}
+--##	EXPORT	428139f3fbd8c22e6f844ce239356cd467e45b02	PlantFmu.fmu	2017-29-08 12:09:52	c-code	{"name":"fmu-import-export","version":"0.2.9-SNAPSHOT"}
+--##	EXPORT	ed25fe79467ca377b62b2d5554e311980b476066	PlantFmu.fmu	2017-29-08 12:07:40	c-code	{"name":"fmu-import-export","version":"0.2.9-SNAPSHOT"}
+--##	EXPORT	29e168a8f09ede1a9586a0996d3b73acc7e55c52	PlantFmu.fmu	2017-29-08 10:29:22	tool-wrapper	{"name":"fmu-import-export","version":"0.2.9-SNAPSHOT"}
 --##	EXPORT	61076852ba5e25f1b549fc7014eaef23356b9241	PlantFmu.fmu	2017-04-08 14:33:22	tool-wrapper	{"name":"fmu-import-export","version":"0.2.7-SNAPSHOT"}
 --##	EXPORT	aebe081e615d7c82f37f8b9ca296351b1f5333b5	PlantFmu.fmu	2017-03-08 23:28:57	c-code	{"name":"fmu-import-export","version":"0.2.6"}
 --##	EXPORT	28381648767a318db2eb542f26c1e7fe686b6e61	PlantFmu.fmu	2017-02-08 21:50:11	tool-wrapper	{"name":"fmu-import-export","version":"0.2.6"}
@@ -19,7 +23,7 @@ instance variables
 	public crp : RealPort := new RealPort(0.0);
 	
 	-- @ interface: type = output, name="csp";
-	public csp : StringPort := new StringPort("");
+	-- public csp : StringPort := new StringPort("");
 	
 	-------------------------
 	-- monitored variables --
@@ -35,6 +39,6 @@ instance variables
 	public mrp : RealPort := new RealPort(0.0);
 	
 	-- @ interface: type = input, name="msp";	
-	public msp : StringPort := new StringPort("");
+	-- public msp : StringPort := new StringPort("");
 	
 end HardwareInterface

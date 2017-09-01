@@ -7,7 +7,8 @@
 #include <sys/shm.h>
 #include <sys/wait.h>
 #include <sys/mman.h>
-#include "dataview/dataview-uniq.h"
+
+#include "dataview-uniq.h"
 
 #define SEM_NAME "/pSem"
 #define SEM_PERMS (S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP)

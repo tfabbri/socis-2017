@@ -16,8 +16,8 @@ void controller_PI_Controller_Function(const asn1SccFmiInteger *IN_mip,
                                        asn1SccFmiReal *OUT_crp)
 {
     /* Write your code here! */
-    *OUT_cip = *IN_mip + 1;
-    *OUT_crp = *IN_mrp + 2;
-    *OUT_cbp = !(IN_mbp);
+    *OUT_cip = *IN_mip;
+    *OUT_crp = *IN_mrp;
+    *OUT_cbp = *IN_mbp;
 }
 

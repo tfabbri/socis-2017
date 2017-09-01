@@ -33,7 +33,7 @@ static const char* resourcesLocation; // AbsolutePath of the resource location d
 sem_t* semaphore;  // Mutex on the shared memory
 struct shm_struct *shm_memory;
 int shm_memory_fd;
-int pid_taste_child;
+int taste_id_process;
 int taste_log_fd;
 static const char taste_log_path[] = "./taste-output.log";
 static const char taste_app_path[] = "binary.c/binaries/x86_partition";
@@ -69,6 +69,9 @@ fmi2Component fmi2Instantiate(fmi2String instanceName, fmi2Type fmuType, fmi2Str
     printf("%s\n", resourcesLocation);
     printf("%s\n", taste_app_path);
     taste_app_abs_path = g_build_path("/", resourcesLocation, taste_app_path, NULL);
+    printf("%s\n", taste_app_abs_path);
+    taste_app_abs_path = taste_app_abs_path + 5; //removing the 'file:' from the path
+    printf("%s\n", taste_app_abs_path);
 
     //resourcesLocation = (char*)calloc(strlen(fmuResourceLocation) + 1, sizeof(char));
     //strcpy(resourcesLocation, fmuResourceLocation);
@@ -87,11 +90,11 @@ fmi2Component fmi2Instantiate(fmi2String instanceName, fmi2Type fmuType, fmi2Str
     ftruncate(shm_memory_fd, sizeof(struct shm_struct));
     shm_memory = (struct shm_struct *) mmap(0, sizeof(struct shm_struct), PROT_WRITE, MAP_SHARED, shm_memory_fd, 0);
 
-    int id_process = fork();
+    taste_id_process = fork();
 
-    if(id_process == 0){
+    if(taste_id_process == 0){
         // Child process - Execute the TASTE app
-        pid_taste_child = getpid();
+        //pid_taste_child = getpid();
         printf("Running the TASTE APP as child process\n");
         // Redirect the output of taste app to log file
         taste_log_fd = open( taste_log_path, O_RDWR | O_CREAT | S_IRWXU | S_IRUSR | S_IWUSR);
@@ -103,9 +106,10 @@ fmi2Component fmi2Instantiate(fmi2String instanceName, fmi2Type fmuType, fmi2Str
         exit(127);
     }
 
-    if(id_process > 0){
+    if(taste_id_process > 0){
         // Parent process - Do Nothing and continue its running
         printf("Running the FMI interface parent process\n");
+        printf("taste_id_process %d\n", taste_id_process);
     }
 
     return (void*) 1;
@@ -139,7 +143,8 @@ fmi2Status fmi2Reset(fmi2Component c)
 
 void fmi2FreeInstance(fmi2Component c)
 {
-    kill(pid_taste_child, SIGTERM);
+    printf("Freeing the instance %d", taste_id_process);
+    kill(taste_id_process, SIGKILL);
     sem_unlink(SEM_NAME);
     shm_unlink(SHM_NAME);
 }
@@ -325,15 +330,15 @@ fmi2Status fmi2DoStep(fmi2Component c, fmi2Real currentCommunicationPoint, fmi2R
 {
     //syncInputsToModel();
     sem_wait(semaphore);
-    shm_memory->mbp = fmiBuffer.intBuffer[3]; 
-    shm_memory->mip = fmiBuffer.realBuffer[4];
+    shm_memory->mbp = fmiBuffer.booleanBuffer[3]; 
+    shm_memory->mip = fmiBuffer.intBuffer[4];
     shm_memory->mrp = fmiBuffer.realBuffer[5];
 
     //stepStatus = vdmStep(currentCommunicationPoint, communicationStepSize);
     
     //syncOutputsToBuffers();
-    fmiBuffer.intBuffer[1] = shm_memory->cip;
     fmiBuffer.booleanBuffer[0] = shm_memory->cbp;
+    fmiBuffer.intBuffer[1] = shm_memory->cip;
     fmiBuffer.realBuffer[2] = shm_memory->crp;
     sem_post(semaphore);
     return fmi2OK;

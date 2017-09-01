@@ -29,9 +29,9 @@ operations
 		hwi.crp.setValue(hwi.mrp.getValue() + 0.1);
 		
 		-- dump the String monitored variables
-		IO`print("msp = \""); IO`print(hwi.msp.getValue()); IO`print("\"\n");
+		--IO`print("msp = \""); IO`print(hwi.msp.getValue()); IO`print("\"\n");
 		-- add a letter to the string
-		hwi.csp.setValue(hwi.msp.getValue() ^ "A");
+		--hwi.csp.setValue(hwi.msp.getValue() ^ "A");
 	)
 	
 thread

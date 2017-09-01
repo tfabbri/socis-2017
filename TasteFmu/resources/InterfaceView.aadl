@@ -31,6 +31,8 @@ FEATURES
   crp : OUT PARAMETER DataView::FmiReal {
     Taste::encoding => NATIVE;
   };
+PROPERTIES
+  Taste::Associated_Queue_Size => 1;
 END PI_Controller_Function;
 
 SUBPROGRAM IMPLEMENTATION PI_Controller_Function.others
@@ -45,8 +47,6 @@ WITH Taste;
 WITH DataView;
 WITH TASTE_IV_Properties;
 SUBPROGRAM PI_Cyclic_Call
-PROPERTIES
-  Taste::Associated_Queue_Size => 1;
 END PI_Cyclic_Call;
 
 SUBPROGRAM IMPLEMENTATION PI_Cyclic_Call.others
@@ -93,6 +93,7 @@ FEATURES
   PI_Controller_Function : PROVIDES SUBPROGRAM ACCESS interfaceview::FV::Controller::PI_Controller_Function.others {
     Taste::coordinates => "1872 599";
     Taste::RCMoperationKind => unprotected;
+    Taste::RCMperiod => 0 ms;
     Taste::Deadline => 0 ms;
     Taste::InterfaceName => "Controller_Function";
   };

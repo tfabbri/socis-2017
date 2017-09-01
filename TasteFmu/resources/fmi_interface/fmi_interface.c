@@ -46,6 +46,11 @@ void fmi_interface_startup()
 }
 
 
+asn1SccFmiInteger last_mip = 0;
+asn1SccFmiReal last_mrp = 0;
+asn1SccFmiBoolean last_mbp = false;
+
+
 void fmi_interface_PI_Cyclic_Call()
 {
     // Enter in critical section
@@ -60,13 +65,23 @@ void fmi_interface_PI_Cyclic_Call()
     asn1SccFmiBoolean t_mbp = shm_memory->mbp;
     //Call to the Controller PI executing the real code 
     printf("IN Port  - mip %d\n", t_mip);
-    fmi_interface_RI_Controller_Function(&t_mip, &t_mbp, &t_mrp, &t_cip, &t_cbp, &t_crp);
-    printf("OUT Port - cip %d\n", t_cip);
+    printf("IN Port  - mrp %f\n", t_mrp);
+    printf("IN Port  - mbp %d\n", t_mbp);
+    fmi_interface_RI_Controller_Function(&last_mip, &last_mbp, &last_mrp, &t_cip, &t_cbp, &t_crp);
+    printf("OUT Port  - cip %d\n", t_cip);
+    printf("OUT Port  - crp %f\n", t_crp);
+    printf("OUT Port  - cbp %d\n", t_cbp);
     // Copy the output generated to the buffer  
     shm_memory->cip = t_cip;
     shm_memory->cbp = t_cbp;
     shm_memory->crp = t_crp;
+    // Store of the current input
+    last_mip = t_mip;
+    last_mrp = t_mrp;
+    last_mbp = t_mbp;
     // Exit critical section
+    
     sem_post(semaphore);
+    printf("\n");
 }
 
