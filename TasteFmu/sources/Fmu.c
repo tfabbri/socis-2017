@@ -30,6 +30,7 @@ static const char* resourcesLocation; // AbsolutePath of the resource location d
  * ---------------------------------------------------------------------------
  */
 
+#define N_TASTE_PI 1
 sem_t* semaphore;  // Mutex on the shared memory
 struct shm_struct *shm_memory;
 int shm_memory_fd;
@@ -328,19 +329,34 @@ fmi2Status fmi2CancelStep(fmi2Component c)
 fmi2Status fmi2DoStep(fmi2Component c, fmi2Real currentCommunicationPoint, fmi2Real communicationStepSize,
 		fmi2Boolean noSetFMUStatePriorToCurrentPoint)
 {
-    //syncInputsToModel();
+    //Synchronize Inputs
+    fmi2Boolean syncOutAllowed = fmi2True;
+
     sem_wait(semaphore);
     shm_memory->mbp = fmiBuffer.booleanBuffer[3]; 
     shm_memory->mip = fmiBuffer.intBuffer[4];
     shm_memory->mrp = fmiBuffer.realBuffer[5];
-
-    //stepStatus = vdmStep(currentCommunicationPoint, communicationStepSize);
-    
-    //syncOutputsToBuffers();
-    fmiBuffer.booleanBuffer[0] = shm_memory->cbp;
-    fmiBuffer.intBuffer[1] = shm_memory->cip;
-    fmiBuffer.realBuffer[2] = shm_memory->crp;
     sem_post(semaphore);
+
+    int i, j, threadRunCount;
+    for(i=0; i<N_TASTE_PI; i++){
+        if(threads[i].lastExecuted >= currentCommunicationPoint){
+        
+        
+        }
+    
+    
+    }
+
+    
+    //Synchronize Outputs
+    if(syncOutAllowed == fmi2True){ 
+        sem_wait(semaphore);
+        fmiBuffer.booleanBuffer[0] = shm_memory->cbp;
+        fmiBuffer.intBuffer[1] = shm_memory->cip;
+        fmiBuffer.realBuffer[2] = shm_memory->crp;
+        sem_post(semaphore);
+    }
     return fmi2OK;
 }
 
