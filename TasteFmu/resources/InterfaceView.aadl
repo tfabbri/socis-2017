@@ -115,7 +115,7 @@ FEATURES
   PI_Cyclic_Call : PROVIDES SUBPROGRAM ACCESS interfaceview::FV::FMI_Interface::PI_Cyclic_Call.others {
     Taste::coordinates => "1138 969";
     Taste::RCMoperationKind => cyclic;
-    Taste::RCMperiod => 100 ms;
+    Taste::RCMperiod => 10 ms;
     Taste::Deadline => 0 ms;
     Taste::InterfaceName => "Cyclic_Call";
   };

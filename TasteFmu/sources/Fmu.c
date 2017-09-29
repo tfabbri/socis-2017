@@ -16,6 +16,7 @@
 #include <common.h>
 #include <signal.h>
 #include <limits.h>
+#include <unistd.h>
 
 
 bool terminateSystemThread = false;
@@ -31,7 +32,7 @@ static const char* resourcesLocation; // AbsolutePath of the resource location d
  */
 
 #define N_TASTE_PI 1
-sem_t* semaphore;  // Mutex on the shared memory
+//sem_t* semaphore;  // Mutex on the shared memory
 struct shm_struct *shm_memory;
 int shm_memory_fd;
 int taste_id_process;
@@ -39,6 +40,10 @@ int taste_log_fd;
 static const char taste_log_path[] = "./taste-output.log";
 static const char taste_app_path[] = "binary.c/binaries/x86_partition";
 
+struct PeriodicThreadStatus threads = {1.0E-1, 0};
+// Must be generalized to a vector with a string identifier when the FMU on TASTE contains more than one PI
+// to launch
+//struct PeriodicThreadStatus threads[] = {{1.0E8, "string_identifier", 0}};
 
 /* ---------------------------------------------------------------------------
 *  FMI functions
@@ -77,19 +82,28 @@ fmi2Component fmi2Instantiate(fmi2String instanceName, fmi2Type fmuType, fmi2Str
     //resourcesLocation = (char*)calloc(strlen(fmuResourceLocation) + 1, sizeof(char));
     //strcpy(resourcesLocation, fmuResourceLocation);
     
-    semaphore = sem_open(SEM_NAME, O_CREAT, SEM_PERMS, 1);
+//    semaphore = sem_open(SEM_NAME, O_CREAT, SEM_PERMS, 1);
 
-    if (semaphore == SEM_FAILED) {
-        perror("Sem_open(3) error");
-        exit(1);
-    }
+//    if (semaphore == SEM_FAILED) {
+//        perror("Sem_open(3) error");
+//        exit(1);
+//    }
 
-    if((shm_memory_fd = shm_open(SHM_NAME,(O_CREAT|O_RDWR), 0666)) == -1){
+    if((shm_memory_fd = shm_open(SHM_NAME,(O_CREAT|O_RDWR|O_TRUNC), 0666)) == -1){
         perror("Shm get error"); 
         exit(1);
     }
     ftruncate(shm_memory_fd, sizeof(struct shm_struct));
-    shm_memory = (struct shm_struct *) mmap(0, sizeof(struct shm_struct), PROT_WRITE, MAP_SHARED, shm_memory_fd, 0);
+    shm_memory = (struct shm_struct *) mmap(0, sizeof(struct shm_struct), PROT_READ|PROT_WRITE, MAP_SHARED, shm_memory_fd, 0);
+
+    pthread_mutexattr_t mutexAttr;
+    pthread_mutexattr_setpshared(&mutexAttr, PTHREAD_PROCESS_SHARED);
+    pthread_mutex_init(&(shm_memory->mutex), &mutexAttr);
+
+    pthread_condattr_t condAttr;
+    pthread_condattr_setpshared(&condAttr, PTHREAD_PROCESS_SHARED);
+    pthread_cond_init(&(shm_memory->put_cond), &condAttr);
+    pthread_cond_init(&(shm_memory->get_cond), &condAttr);
 
     taste_id_process = fork();
 
@@ -102,9 +116,9 @@ fmi2Component fmi2Instantiate(fmi2String instanceName, fmi2Type fmuType, fmi2Str
         dup2(taste_log_fd, 1);
         dup2(taste_log_fd, 2);
         close(taste_log_fd);
-        execl(taste_app_abs_path, taste_app_abs_path, NULL);
-        perror("EXECL failed");
-        exit(127);
+        //execl(taste_app_abs_path, taste_app_abs_path, NULL);
+        //perror("EXECL failed");
+        //exit(127);
     }
 
     if(taste_id_process > 0){
@@ -113,6 +127,8 @@ fmi2Component fmi2Instantiate(fmi2String instanceName, fmi2Type fmuType, fmi2Str
         printf("taste_id_process %d\n", taste_id_process);
     }
 
+    printf("Sleeping...\n");
+    sleep(5);
     return (void*) 1;
 }
 
@@ -146,7 +162,7 @@ void fmi2FreeInstance(fmi2Component c)
 {
     printf("Freeing the instance %d", taste_id_process);
     kill(taste_id_process, SIGKILL);
-    sem_unlink(SEM_NAME);
+    //sem_unlink(SEM_NAME);
     shm_unlink(SHM_NAME);
 }
 
@@ -329,33 +345,51 @@ fmi2Status fmi2CancelStep(fmi2Component c)
 fmi2Status fmi2DoStep(fmi2Component c, fmi2Real currentCommunicationPoint, fmi2Real communicationStepSize,
 		fmi2Boolean noSetFMUStatePriorToCurrentPoint)
 {
+    printf("Execute DoStep\n");
+    printf("%f %f %f %f\n", currentCommunicationPoint, communicationStepSize, threads.period, threads.lastExecuted);
     //Synchronize Inputs
     fmi2Boolean syncOutAllowed = fmi2True;
 
-    sem_wait(semaphore);
-    shm_memory->mbp = fmiBuffer.booleanBuffer[3]; 
-    shm_memory->mip = fmiBuffer.intBuffer[4];
-    shm_memory->mrp = fmiBuffer.realBuffer[5];
-    sem_post(semaphore);
-
     int i, j, threadRunCount;
-    for(i=0; i<N_TASTE_PI; i++){
-        if(threads[i].lastExecuted >= currentCommunicationPoint){
-        
-        
-        }
-    
-    
+    // for the moment we consider the case of only one PI inside the TASTE app
+    //for(i=0; i<N_TASTE_PI; i++){
+    if(threads.lastExecuted + threads.period > currentCommunicationPoint + communicationStepSize){
+        printf("LE + P > CCP + SS\n");
+        threadRunCount = 0; 
     }
+    else 
+        if (1){
+            printf("%f\n", ((currentCommunicationPoint + communicationStepSize - threads.lastExecuted)/threads.period));
+            threadRunCount = (int)((currentCommunicationPoint + communicationStepSize - threads.lastExecuted) / threads.period);
+            syncOutAllowed = fmi2True;
+        }
+    printf("%f\n", ((currentCommunicationPoint + communicationStepSize - threads.lastExecuted)/threads.period));
+    double temp = ((currentCommunicationPoint + communicationStepSize - threads.lastExecuted) / threads.period);
+    int temp2 =(int) (temp*100); 
+    threadRunCount = (int) temp;
+    if (threadRunCount > 0)
+        printf("Ole\n");
+    printf("Thread Run Count = %d\n", threadRunCount);
+    printf("Temp Run Count = %d\n", temp2);
+    for(i = 0; i < threadRunCount; i++){
+        // Enter in critical section
+        pthread_mutex_lock(&(shm_memory->mutex));
+            shm_memory->mbp = fmiBuffer.booleanBuffer[3]; 
+            shm_memory->mip = fmiBuffer.intBuffer[4];
+            shm_memory->mrp = fmiBuffer.realBuffer[5];
+            printf("Critical Section\n");
 
-    
-    //Synchronize Outputs
-    if(syncOutAllowed == fmi2True){ 
-        sem_wait(semaphore);
-        fmiBuffer.booleanBuffer[0] = shm_memory->cbp;
-        fmiBuffer.intBuffer[1] = shm_memory->cip;
-        fmiBuffer.realBuffer[2] = shm_memory->crp;
-        sem_post(semaphore);
+            pthread_cond_signal(&(shm_memory->put_cond));
+
+            printf("Wait on codition variable\n");
+            pthread_cond_wait(&(shm_memory->get_cond), &(shm_memory->mutex));
+
+            fmiBuffer.booleanBuffer[0] = shm_memory->cbp;
+            fmiBuffer.intBuffer[1] = shm_memory->cip;
+            fmiBuffer.realBuffer[2] = shm_memory->crp;
+        // Exit critical section
+        pthread_mutex_unlock(&(shm_memory->mutex));
+        threads.lastExecuted += threads.period;
     }
     return fmi2OK;
 }

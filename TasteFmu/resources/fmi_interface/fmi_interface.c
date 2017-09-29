@@ -30,18 +30,27 @@ void fmi_interface_startup()
      *
      */
 
-    semaphore = sem_open(SEM_NAME, O_CREAT, SEM_PERMS, 1);
+    //semaphore = sem_open(SEM_NAME, O_CREAT, SEM_PERMS, 1);
 
-    if (semaphore == SEM_FAILED) {
-        perror("Sem_open(3) error\n");
-        exit(1);
-    }
-    if((shm_memory_fd = shm_open(SHM_NAME,(O_CREAT|O_RDWR), 0666)) == -1){
+    //if (semaphore == SEM_FAILED) {
+    //    perror("Sem_open(3) error\n");
+    //    exit(1);
+    //}
+    if((shm_memory_fd = shm_open(SHM_NAME,(O_RDWR), 0666)) == -1){
         perror("Shm get error\n"); 
         exit(1);
     }
-    ftruncate(shm_memory_fd, sizeof(struct shm_struct));
-    shm_memory = (struct shm_struct *) mmap(0, sizeof(struct shm_struct), PROT_WRITE, MAP_SHARED, shm_memory_fd, 0);
+    //ftruncate(shm_memory_fd, sizeof(struct shm_struct));
+    shm_memory = (struct shm_struct *) mmap(0, sizeof(struct shm_struct), PROT_READ | PROT_WRITE, MAP_SHARED, shm_memory_fd, 0);
+    // mutex attr and condition attr
+    //pthread_mutexattr_t mutexAttr;
+    //pthread_mutexattr_setpshared(&mutexAttr, PTHREAD_PROCESS_SHARED);
+    //pthread_mutex_init(&(shm_memory->mutex), &mutexAttr);
+
+    //pthread_condattr_t condAttr;
+    //pthread_condattr_setpshared(&condAttr, PTHREAD_PROCESS_SHARED);
+    //pthread_cond_init(&(shm_memory->put_cond), &condAttr);
+    //pthread_cond_init(&(shm_memory->get_cond), &condAttr);
 
 }
 
@@ -54,34 +63,38 @@ asn1SccFmiBoolean last_mbp = false;
 void fmi_interface_PI_Cyclic_Call()
 {
     // Enter in critical section
-    sem_wait(semaphore);
-    //printf("Cyclic call to the Controller function\n");
-    asn1SccFmiInteger t_cip;
-    asn1SccFmiReal t_crp;
-    asn1SccFmiBoolean t_cbp;
-    // Read the input from the buffer
-    asn1SccFmiInteger t_mip = shm_memory->mip; 
-    asn1SccFmiReal t_mrp = shm_memory->mrp;
-    asn1SccFmiBoolean t_mbp = shm_memory->mbp;
-    //Call to the Controller PI executing the real code 
-    printf("IN Port  - mip %d\n", t_mip);
-    printf("IN Port  - mrp %f\n", t_mrp);
-    printf("IN Port  - mbp %d\n", t_mbp);
-    fmi_interface_RI_Controller_Function(&last_mip, &last_mbp, &last_mrp, &t_cip, &t_cbp, &t_crp);
-    printf("OUT Port  - cip %d\n", t_cip);
-    printf("OUT Port  - crp %f\n", t_crp);
-    printf("OUT Port  - cbp %d\n", t_cbp);
-    // Copy the output generated to the buffer  
-    shm_memory->cip = t_cip;
-    shm_memory->cbp = t_cbp;
-    shm_memory->crp = t_crp;
-    // Store of the current input
-    last_mip = t_mip;
-    last_mrp = t_mrp;
-    last_mbp = t_mbp;
+    pthread_mutex_lock(&(shm_memory->mutex));
+    // Wait the signal from the COE
+    printf("\tTASTE- Before WAIT\n");
+    pthread_cond_wait(&(shm_memory->put_cond), &(shm_memory->mutex));
+    printf("\tTASTE- AFTER WAIT\n");
+        //printf("Cyclic call to the Controller function\n");
+        asn1SccFmiInteger t_cip;
+        asn1SccFmiReal t_crp;
+        asn1SccFmiBoolean t_cbp;
+        // Read the input from the buffer
+        asn1SccFmiInteger t_mip = shm_memory->mip; 
+        asn1SccFmiReal t_mrp = shm_memory->mrp;
+        asn1SccFmiBoolean t_mbp = shm_memory->mbp;
+        //Call to the Controller PI executing the real code 
+        printf("IN Port  - mip %d\n", t_mip);
+        printf("IN Port  - mrp %f\n", t_mrp);
+        printf("IN Port  - mbp %d\n", t_mbp);
+        fmi_interface_RI_Controller_Function(&last_mip, &last_mbp, &last_mrp, &t_cip, &t_cbp, &t_crp);
+        printf("OUT Port  - cip %d\n", t_cip);
+        printf("OUT Port  - crp %f\n", t_crp);
+        printf("OUT Port  - cbp %d\n", t_cbp);
+        printf("\n");
+        // Copy the output generated to the buffer  
+        shm_memory->cip = t_cip;
+        shm_memory->cbp = t_cbp;
+        shm_memory->crp = t_crp;
+        // Store of the current input
+        last_mip = t_mip;
+        last_mrp = t_mrp;
+        last_mbp = t_mbp;
+    pthread_cond_signal(&(shm_memory->get_cond));
     // Exit critical section
-    
-    sem_post(semaphore);
-    printf("\n");
+    pthread_mutex_unlock(&(shm_memory->mutex));
 }
 

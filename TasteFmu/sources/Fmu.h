@@ -29,7 +29,7 @@ struct FmiBuffer{
 struct PeriodicThreadStatus
 {
 	fmi2Real period;
-	void (*call)(void);
+        // char *string_identifier; // to identify the PI to execute on the TASTE App side
 	fmi2Real lastExecuted;
 };
 
@@ -37,7 +37,8 @@ extern struct FmiBuffer fmiBuffer;
 extern const fmi2CallbackFunctions *g_fmiCallbackFunctions;
 extern const char* g_fmiInstanceName;
 
-extern struct PeriodicThreadStatus threads[];
+//extern struct PeriodicThreadStatus threads[];
+extern struct PeriodicThreadStatus threads;
 
 void syncInputsToModel();
 void syncOutputsToBuffers();
@@ -45,7 +46,6 @@ void systemInit();
 void systemDeInit();
 void systemMain();
 
-
-fmi2Status vdmStep(fmi2Real currentCommunicationPoint, fmi2Real communicationStepSize);
+//fmi2Status vdmStep(fmi2Real currentCommunicationPoint, fmi2Real communicationStepSize);
 
 #endif /* FMU_H_ */
